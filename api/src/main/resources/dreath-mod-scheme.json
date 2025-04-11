@@ -1,0 +1,184 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://json.schemastore.org/dreath-mod",
+
+  "title": "Dreath dreath-mod.json",
+  "description": "JSON schema for dreath-mod files, which are used in Dreath modding.",
+
+  "type": "object",
+  "additionalProperties": false,
+  "required": [ "id", "name", "version", "main", "dependencies" ],
+
+  "definitions": {
+    "simple-string": {
+      "type": "string",
+      "pattern": "^[a-z0-9_]+$",
+      "maxLength": 32,
+      "minLength": 2
+    },
+    "complex-string": {
+      "type": "string",
+      "maxLength": 64,
+      "minLength": 1
+    },
+    "url": {
+      "title": "Link",
+      "description": "A URL or URI to a website.",
+      "type": "string",
+      "pattern": "https?://(www\\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\\.[a-z]{2,4}\\b([-a-zA-Z0-9@:%_+.~#?&/=]*)"
+    },
+    "discord": {
+      "title": "Discord Invite",
+      "description": "A discord server invite, which can also be a short '.gg/...' or just the invite itself.",
+      "type": "string",
+      "pattern": "^(?:(?:(?:https?://)?(?:www\\.)?(?:(?:discord(?:app)?\\.com/invite/)|(?:discord\\.gg/|\\.gg/)))([A-Za-z0-9-]{4,12})|([A-Za-z0-9-]{4,12}))$"
+    },
+    "email": {
+      "title": "E-Mail",
+      "description": "An email address.",
+      "type": "string",
+      "pattern": "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"
+    },
+    "class-path": {
+      "title": "Class Path",
+      "description": "A Java class-path to a specific class/file.",
+      "type": "string",
+      "pattern": "^(?!com\\.marcpg\\.dreath\\.)([a-zA-Z_$][a-zA-Z\\d_$]*\\.)*[a-zA-Z_$][a-zA-Z\\d_$]*$"
+    },
+    "dependency": {
+      "title": "Dependency",
+      "description": "A dependency for this mod.",
+
+      "type": "object",
+      "additionalProperties": false,
+      "required": [ "id" ],
+
+      "properties": {
+        "id": {
+          "title": "Dependency ID",
+          "description": "This dependency's mod ID.",
+          "$ref": "#/definitions/simple-string"
+        },
+        "min-version": {
+          "title": "Minimum Dependency Version",
+          "description": "The minimum version of this dependency.",
+          "type": "string"
+        },
+        "required": {
+          "title": "Dependency Required",
+          "description": "Whether this dependency is required.",
+          "type": "boolean"
+        },
+        "load": {
+          "title": "Load Before",
+          "description": "Whether this dependency should be loaded before this mod.",
+          "type": "string",
+          "enum": [
+            "before",
+            "after"
+          ]
+        }
+      }
+    }
+  },
+
+  "properties": {
+    "id": {
+      "title": "Mod ID",
+      "description": "A mod ID for internal identification, which should be unique.",
+      "$ref": "#/definitions/simple-string"
+    },
+    "name": {
+      "title": "Mod Name",
+      "description": "A mod name that will be displayed to the user.",
+      "$ref": "#/definitions/complex-string"
+    },
+    "version": {
+      "title": "Mod Version",
+      "description": "The current version of your mod.",
+      "type": "string"
+    },
+    "description": {
+      "title": "Mod Description",
+      "description": "A short description of your mod and what it does.",
+      "type": "string"
+    },
+    "main": {
+      "title": "Main Class",
+      "description": "Class path to the mod's main class.",
+      "$ref": "#/definitions/class-path"
+    },
+    "developers": {
+      "title": "Mod Developers",
+      "description": "List of developers who worked on this mod.",
+      "type": "array",
+      "items": {
+        "type": "string",
+        "uniqueItems": true
+      }
+    },
+    "contact": {
+      "title": "Mod Contact Values",
+      "description": "All contact links related to this mod.",
+
+      "type": "object",
+      "additionalProperties": false,
+
+      "properties": {
+        "website": {
+          "title": "Website",
+          "description": "Link to this mod's website.",
+          "$ref": "#/definitions/url"
+        },
+        "discord": {
+          "$ref": "#/definitions/discord"
+        },
+        "email": {
+          "title": "Contact/support Email",
+          "description": "Email address for support regarding this mod.",
+          "$ref": "#/definitions/email"
+        },
+        "source": {
+          "title": "Source",
+          "description": "Link to this mod's source code. Usually GitHub, GitLab, or Bitbucket.",
+          "$ref": "#/definitions/url"
+        },
+        "extra": {
+          "title": "Extra Links",
+          "description": "Additional links that are not one of the types above.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/url"
+          }
+        }
+      }
+    },
+    "dependencies": {
+      "title": "Dependencies",
+      "description": "List of dependencies for this mod.",
+
+      "type": "object",
+      "additionalProperties": false,
+      "required": [ "dreath" ],
+
+      "properties": {
+        "dreath": {
+          "title": "Dreath",
+          "description": "The Dreath API version.",
+          "type": "string",
+          "examples": [
+            "1.0.0"
+          ]
+        },
+        "external": {
+          "title": "External Dependencies",
+          "description": "List of external dependencies, which are also mods.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/dependency"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "lang": {
+    "native": {
+      "name": "Deutsch",
+      "region": "Deutschland",
+      "description": "Deutsch ohne dialekt, einfach nur normales Hochdeutsch."
+    },
+    "international": {
+      "name": "German",
+      "region": "Germany",
+      "description": "German without dialect, also called High-German."
+    }
+  },
+  "game": {
+    "name": "Dreath",
+    "description": "Ultra-realistisches Überlebensspiel von MarcPG."
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "lang": {
+    "native": {
+      "name": "Latinus",
+      "region": "Urbs Vaticana",
+      "description": "English spoken around the world, especially in north america."
+    },
+    "international": {
+      "name": "Latin",
+      "region": "Vatican City",
+      "description": "Latina in Urbe Vaticana et Roma Antiqua loquebantur."
+    }
+  },
+  "game": {
+    "name": "Dreath",
+    "description": "Lusus ultra-realisticus superstes a MarcPG."
+  }
+}

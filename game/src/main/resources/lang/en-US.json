@@ -1,0 +1,18 @@
+{
+  "lang": {
+    "native": {
+      "name": "English",
+      "region": "United States",
+      "description": "English spoken around the world, especially in north america."
+    },
+    "international": {
+      "name": "English",
+      "region": "United States",
+      "description": "English spoken around the world, especially in north america."
+    }
+  },
+  "game": {
+    "name": "Dreath",
+    "description": "Ultra-realistic survival game by MarcPG."
+  }
+}
