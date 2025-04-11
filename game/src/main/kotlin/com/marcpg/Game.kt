@@ -4,6 +4,7 @@ import com.marcpg.log.DreathLogger
 import com.marcpg.log.DreathLoggerFactory
 import com.marcpg.log.dreathLogger
 import com.marcpg.util.*
+import com.marcpg.util.config.Settings
 import java.nio.file.Files
 import java.nio.file.Path
 import kotlin.time.TimeSource
@@ -11,6 +12,7 @@ import kotlin.time.TimeSource
 object Game {
     lateinit var MAIN_THREAD: Thread
     lateinit var CLI_ARGS: CommandArguments
+    lateinit var SETTINGS: Settings
 
     lateinit var DIR: Path
     lateinit var LOG: DreathLogger
@@ -28,6 +30,13 @@ object Game {
 
         DIR = Files.createDirectories(CLI_ARGS.gameDir)
         LOG = dreathLogger("Common")
+
+        SETTINGS = Settings(DIR, "common").loadThis()
+
+        val loadMods = !CLI_ARGS.noMods && SETTINGS.getBoolean("general.load-mods", true)
+
+        if (System.console() != null)
+            CONSOLE = Console()
 
         LOG.info("Starting Dreath main logic...")
         val start = TimeSource.Monotonic.markNow()

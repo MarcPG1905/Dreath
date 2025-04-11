@@ -1,0 +1,6 @@
+{
+  "graphical": {
+    "vsync": true,
+    "fps-limit": 60.0
+  }
+}
