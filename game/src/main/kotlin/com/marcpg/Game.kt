@@ -1,5 +1,7 @@
 package com.marcpg
 
+import com.marcpg.command.Console
+import com.marcpg.dreath.command.CommandManager
 import com.marcpg.log.DreathLogger
 import com.marcpg.log.DreathLoggerFactory
 import com.marcpg.log.dreathLogger
@@ -17,6 +19,7 @@ object Game {
 
     lateinit var DIR: Path
     lateinit var LOG: DreathLogger
+    private lateinit var CONSOLE: Console
 
     var running: Boolean = true
         internal set
@@ -66,6 +69,9 @@ object Game {
 
         LOG.info("Registering base commands...")
         CommandManager.register(com.marcpg.command.Dreath())
+        CommandManager.register(com.marcpg.command.Help())
+        CommandManager.register(com.marcpg.command.Mods())
+        CommandManager.register(com.marcpg.command.Restart())
         CommandManager.register(com.marcpg.command.Stop())
         LOG.fine("Registered base commands ${start.elapsedNow()} into startup.")
 
@@ -88,6 +94,10 @@ object Game {
      */
     private fun end() {
         LOG.info("Shutting down...")
+
+        LOG.info("Stopping console, commands will no longer be received...")
+        if (System.console() != null)
+            CONSOLE.stop()
 
         LOG.info("Unloading ${ModLoader.loaded()} mods...")
         ModLoader.unload()
