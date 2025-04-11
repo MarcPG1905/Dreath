@@ -1,0 +1,30 @@
+{
+  "id": "example_mod",
+  "name": "Example Mod",
+  "version": "1.0.0",
+  "description": "An example mod for Dreath.",
+  "main": "com.example.example_mod.ExampleMod",
+  "developers": [
+    "Example User"
+  ],
+  "contact": {
+    "website": "https://example.com/",
+    "discord": "discord.gg/Example",
+    "email": "email@example.com",
+    "source": "https://github.com/...",
+    "extra": [
+      "https://example.com/"
+    ]
+  },
+  "dependencies": {
+    "dreath": "1.0.0",
+    "external": [
+      {
+        "id": "example_library",
+        "min-version": "1.2.3",
+        "required": true,
+        "load": "after"
+      }
+    ]
+  }
+}

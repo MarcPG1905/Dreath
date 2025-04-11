@@ -9,21 +9,27 @@ import java.nio.file.Path
  * This is required for a mod to work and should also be specified inside the `dreath-mod.json` file.
  */
 abstract class DreathMod {
-    private var enabled: Boolean = false
-    private var currentlyEnabling: Boolean = false
-    private var currentlyDisabling: Boolean = false
+    private var _enabled = false
+    private var _enabling = false
+    private var _disabling = false
+
+    val isEnabled get() = _enabled
 
     /** This mod's current logger. */
     lateinit var logger: Logger<*>
+        private set
 
     /** This mod's loaded info from the `dreath-mod.json` file. */
     lateinit var info: ModInfo
+        private set
 
     /** This mod's base directory. Usually `./mods/<mod-id>/`. */
     lateinit var modDirectory: Path
+        private set
 
     /** This mod's data directory. Usually `./mods/<mod-id>/data/`. */
     lateinit var dataDirectory: Path
+        private set
 
     /**
      * Called when the game starts and this mod was just loaded.
@@ -53,9 +59,8 @@ abstract class DreathMod {
     fun internalInit(logger: Logger<*>, info: ModInfo) {
         this.logger = logger
         this.info = info
-
-        modDirectory = File("mods/${info.name}").toPath()
-        dataDirectory = modDirectory.resolve("data")
+        this.modDirectory = File("mods/${info.name}").toPath()
+        this.dataDirectory = this.modDirectory.resolve("data")
 
         init()
     }
@@ -73,11 +78,10 @@ abstract class DreathMod {
      * **This should under no circumstances be called by a mod!**
      */
     fun internalEnable() {
-        this.currentlyEnabling = true
+        _enabling = true
         enable()
-        this.currentlyEnabling = false
-
-        this.enabled = true
+        _enabling = false
+        _enabled = true
     }
 
     /**
@@ -86,10 +90,9 @@ abstract class DreathMod {
      * **This should under no circumstances be called by a mod!**
      */
     fun internalDisable() {
-        this.currentlyDisabling = true
+        _disabling = true
         disable()
-        this.currentlyDisabling = false
-
-        this.enabled = false
+        _disabling = false
+        _enabled = false
     }
 }

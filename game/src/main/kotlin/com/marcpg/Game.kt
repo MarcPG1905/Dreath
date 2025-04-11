@@ -3,6 +3,7 @@ package com.marcpg
 import com.marcpg.log.DreathLogger
 import com.marcpg.log.DreathLoggerFactory
 import com.marcpg.log.dreathLogger
+import com.marcpg.mods.ModLoader
 import com.marcpg.util.*
 import com.marcpg.util.config.Settings
 import java.nio.file.Files
@@ -50,7 +51,31 @@ object Game {
         Constants; DreathLoggerFactory
         LOG.fine("Loaded static objects ${start.elapsedNow()} into startup.")
 
+        if (loadMods) {
+            LOG.info("Loading mods...")
+            val loaded = ModLoader.init()
+            if (loaded.first > 0) {
+                LOG.fine("Found and initialized ${loaded.first} mods ${start.elapsedNow()} into startup.")
+            } else {
+                LOG.fine("No mods found.")
+            }
+            LOG.fine("Total mods loaded: ${loaded.second}")
+        } else {
+            LOG.config("Skipping mod loading due to flag or configuration.")
+        }
+
+        LOG.info("Registering base commands...")
+        CommandManager.register(com.marcpg.command.Dreath())
+        CommandManager.register(com.marcpg.command.Stop())
+        LOG.fine("Registered base commands ${start.elapsedNow()} into startup.")
+
         CLI_ARGS.environment.instances().forEach { it.run(start) }
+
+        if (loadMods) {
+            LOG.info("Enabling mods...")
+            ModLoader.enable()
+            LOG.info("All mods were successfully enabled.")
+        } // No else, because we don't need to send the same message twice.
 
         LOG.info("Done! Took ${start.elapsedNow()}.")
 
@@ -63,6 +88,9 @@ object Game {
      */
     private fun end() {
         LOG.info("Shutting down...")
+
+        LOG.info("Unloading ${ModLoader.loaded()} mods...")
+        ModLoader.unload()
 
         CLI_ARGS.environment.instances().forEach { it.end() }
 
