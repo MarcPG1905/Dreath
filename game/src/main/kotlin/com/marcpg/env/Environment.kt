@@ -6,5 +6,6 @@ import com.marcpg.env.server.ServerEnv
 enum class Environment(val instances: () -> List<GameEnv>) {
     CLIENT({ listOf(ClientEnv) }),
     SERVER({ listOf(ServerEnv) }),
+    MODULE_TESTING({ listOf(ModuleTestingEnv) }),
     UNKNOWN({ listOf() }),
 }
