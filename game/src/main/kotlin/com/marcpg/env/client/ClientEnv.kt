@@ -5,6 +5,7 @@ import com.marcpg.env.GameEnv
 import com.marcpg.log.DreathLogger
 import com.marcpg.log.dreathLogger
 import com.marcpg.util.Constants
+import com.marcpg.util.DiscordRichPresence
 import com.marcpg.util.config.Settings
 import com.marcpg.visual.Rendering
 import de.fabmax.kool.KoolApplication
@@ -41,6 +42,9 @@ object ClientEnv : GameEnv() {
                 Rendering()
             }
         }
+
+        DiscordRichPresence.run()
+
         log.fine("Initialized kool logic ${start.elapsedNow()} into startup.")
     }
 }
