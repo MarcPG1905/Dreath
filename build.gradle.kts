@@ -38,7 +38,6 @@ subprojects {
 
     dependencies {
         implementation("com.marcpg:libpg-base:1.0.0")
-        implementation("com.marcpg:libpg-storage-json:1.0.0")
         implementation("com.github.ajalt.clikt:clikt:5.0.3")
 
         implementation("org.jetbrains.kotlinx:kotlinx-serialization-json-jvm:1.8.1")
