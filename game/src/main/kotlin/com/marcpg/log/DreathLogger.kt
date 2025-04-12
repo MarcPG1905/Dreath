@@ -18,8 +18,10 @@ class DreathLogger internal constructor(private val name: String, private val lo
     override fun warn(message: String) = log(LogLevel.WARN, message)
     override fun error(message: String) = log(LogLevel.ERROR, message)
 
-    override fun trace(message: String) = fine(message)
-    override fun debug(message: String) = config(message)
+    // Ignore these to prevent KPresence from spamming the console:
+    override fun trace(message: String) {}
+    override fun debug(message: String) {}
+
     override fun error(message: String, throwable: Throwable) {
         error(message)
         throwable.printStackTrace(this)
