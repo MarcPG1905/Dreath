@@ -40,7 +40,7 @@ class Help : CommandClass {
 }
 
 class Stop : CommandClass {
-    override fun constructCommand(): Command = command("stop", listOf("end"), "Shuts down the game safely.") {
+    override fun constructCommand(): Command = command("stop", listOf("end", "exit"), "Shuts down the game safely.") {
         action {
             exitProcess(0)
         }
