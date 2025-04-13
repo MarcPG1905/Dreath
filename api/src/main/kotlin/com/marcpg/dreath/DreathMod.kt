@@ -9,11 +9,17 @@ import java.nio.file.Path
  * This is required for a mod to work and should also be specified inside the `dreath-mod.json` file.
  */
 abstract class DreathMod {
-    private var _enabled = false
+    /**
+     * Whether this mod is currently enabled or not.
+     *
+     * This turns `true` after [enable] got called and back to `false` when [disable] is called.
+     * The [init] method does not affect this.
+     */
+    var enabled = false
+        private set
+
     private var _enabling = false
     private var _disabling = false
-
-    val isEnabled get() = _enabled
 
     /** This mod's current logger. */
     lateinit var logger: Logger<*>
@@ -81,7 +87,7 @@ abstract class DreathMod {
         _enabling = true
         enable()
         _enabling = false
-        _enabled = true
+        enabled = true
     }
 
     /**
@@ -93,6 +99,6 @@ abstract class DreathMod {
         _disabling = true
         disable()
         _disabling = false
-        _enabled = false
+        enabled = false
     }
 }

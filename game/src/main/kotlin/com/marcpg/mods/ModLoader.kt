@@ -4,6 +4,7 @@ import com.marcpg.Game
 import com.marcpg.dreath.DreathMod
 import com.marcpg.dreath.ModInfo
 import com.marcpg.log.dreathLogger
+import com.marcpg.util.Constants
 import com.marcpg.util.config.ReadableJson
 import com.marcpg.util.resolveDiscordInvite
 import kotlinx.serialization.json.booleanOrNull
@@ -90,11 +91,23 @@ object ModLoader {
             runCatching {
                 val info = extractInfo(modFile.toFile(), jar, jar.getJarEntry("dreath-mod.json"))
 
+                if (info.id in LOADED_MODS) {
+                    Game.LOG.error("Duplicate ID ${info.id} - already loaded")
+                    return
+                }
+
+                if (Constants.VERSION < info.dependencies.dreath) {
+                    Game.LOG.error("Mod ${info.name} requires Dreath ${info.dependencies.dreath} but ${Constants.VERSION} is provided")
+                    return
+                }
+
                 val dreathMod = info.main.objectInstance
                 if (dreathMod != null) {
                     Game.LOG.fine("Loading mod ${info.name}...")
+
                     dreathMod.internalInit(dreathLogger(info.id), info)
                     LOADED_MODS[info.id] = dreathMod
+
                     Game.LOG.fine("Loaded mod ${info.name}.")
                 } else {
                     Game.LOG.error("Could not load mod ${info.name}. Main class is either missing or a class instead of an object.")
