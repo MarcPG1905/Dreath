@@ -13,7 +13,7 @@ object DiscordRichPresence {
         client.on<ReadyEvent> {
             update {
                 type = ActivityType.GAME
-                details = "${Constants.NAME} ${Constants.VERSION_STRING}"
+                details = Constants.VERSION.fullString()
                 state = "Experimental Version" // TODO: Remove this!
             }
         }

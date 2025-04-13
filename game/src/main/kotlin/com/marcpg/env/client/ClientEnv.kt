@@ -31,7 +31,7 @@ object ClientEnv : GameEnv() {
         thread(name = "Rendering Thread") {
             KoolApplication(KoolConfigJvm(
                 renderBackend = KoolConfigJvm.Backend.VULKAN,
-                windowTitle = Constants.NAME,
+                windowTitle = Constants.VERSION.moduleName,
                 windowSize = Vec2i(Constants.DEFAULT_WINDOW_SIZE_X, Constants.DEFAULT_WINDOW_SIZE_Y),
                 isVsync = settings.getBoolean("graphical.vsync", true),
                 maxFrameRate = settings.getDouble("graphical.fps-limit", 60.0).roundToInt(),

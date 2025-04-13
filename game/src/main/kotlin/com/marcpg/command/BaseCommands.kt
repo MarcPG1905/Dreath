@@ -15,8 +15,8 @@ class Dreath : CommandClass {
     override fun constructCommand(): Command = command("dreath", listOf(), "Gets information about the dreath game.") {
         action {
             executor.info("""
-                Dreath: ${Constants.NAME} ${Constants.VERSION_STRING}
-                Protocol: Peg-Protocol ${Constants.PEG_PROTOCOL_VERSION}
+                Dreath: ${Constants.VERSION}
+                Protocol: ${Constants.PROTOCOL_VERSION}
                 
                 Loaded Mods: ${ModLoader.loaded()}
                 

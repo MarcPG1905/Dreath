@@ -17,7 +17,7 @@
     ]
   },
   "dependencies": {
-    "dreath": "1.0.0",
+    "dreath": "0.1.0",
     "external": [
       {
         "id": "example_library",
