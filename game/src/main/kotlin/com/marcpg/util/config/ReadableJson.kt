@@ -3,7 +3,7 @@ package com.marcpg.util.config
 import com.marcpg.util.Constants
 import kotlinx.serialization.json.*
 
-open class ReadableJson(private val json: String = "{}") {
+open class ReadableJson(protected var json: String = "{}") {
     companion object {
         const val PATH_SPLITTER = "."
     }

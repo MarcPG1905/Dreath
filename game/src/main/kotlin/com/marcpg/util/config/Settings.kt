@@ -6,6 +6,7 @@ import kotlinx.serialization.json.*
 import java.nio.file.Path
 import kotlin.io.path.name
 import kotlin.io.path.notExists
+import kotlin.io.path.readText
 import kotlin.io.path.writeText
 
 open class Settings(private val path: Path) : ReadableJson() {
@@ -18,6 +19,7 @@ open class Settings(private val path: Path) : ReadableJson() {
 
     override fun load() {
         saveInternally()
+        json = path.readText()
         super.load()
     }
 
