@@ -68,3 +68,7 @@ fun String.makeCapitalized(): String {
 fun String.truncate(maxLength: Int = 48): String {
     return if (length <= maxLength) this else take(maxLength - 3) + "..."
 }
+
+inline fun <reified T : Enum<T>> enumValueNoCase(name: String): T =
+    enumValues<T>().firstOrNull { it.name.equals(name, ignoreCase = true) }
+        ?: throw IllegalArgumentException("No enum constant ${T::class.qualifiedName}.$name")

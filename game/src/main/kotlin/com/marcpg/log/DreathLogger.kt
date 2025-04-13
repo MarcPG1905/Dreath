@@ -1,5 +1,6 @@
 package com.marcpg.log
 
+import com.marcpg.libpg.color.Ansi
 import com.marcpg.libpg.log.Logger
 import io.github.vyfor.kpresence.logger.ILogger
 import java.io.PrintStream
@@ -10,6 +11,9 @@ class DreathLogger internal constructor(private val name: String, private val lo
     companion object {
         private val DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("dd-MM HH:mm:ss")
         private const val LOG_LEVEL_LENGTH = 4
+
+        var logLevel = LogLevel.FINE
+        var ansiFormatting = true
     }
 
     fun fine(message: String) = log(LogLevel.FINE, message)
@@ -33,11 +37,20 @@ class DreathLogger internal constructor(private val name: String, private val lo
 
         val raw = "[$timestamp - $paddedLevel] $name: $msg"
 
-        nativeLogger.println("${level.ansi}$raw\u001B[0m")
+        if (level.weight >= logLevel.weight)
+            nativeLogger.println(if (ansiFormatting) "${level.ansi}$raw\u001B[0m" else raw)
         logFileStream.println(raw)
     }
 }
 
 fun Throwable.printStackTrace(log: Logger<*>) {
     stackTraceToString().split("\n").forEach { log.error(it) }
+}
+
+enum class LogLevel(val abb: String, val ansi: String, val weight: Int) {
+    FINE("FINE", Ansi.GRAY.get(), 0),
+    CONFIG("CONF", Ansi.DARK_GRAY.get(), 0),
+    INFO("INFO", Ansi.WHITE.get(), 1),
+    WARN("WARN", Ansi.YELLOW.get(), 2),
+    ERROR("ERR", Ansi.RED.get(), 3)
 }

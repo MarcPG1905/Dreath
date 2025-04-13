@@ -37,6 +37,9 @@ object Game {
 
         SETTINGS = Settings(DIR, "common").loadThis()
 
+        DreathLogger.logLevel = enumValueNoCase(SETTINGS.getString("logger.level", "fine"))
+        DreathLogger.ansiFormatting = SETTINGS.getBoolean("logger.ansi-formatting", true)
+
         val loadMods = !CLI_ARGS.noMods && SETTINGS.getBoolean("general.load-mods", true)
 
         if (System.console() != null)

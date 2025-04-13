@@ -1,5 +1,9 @@
 {
   "general": {
     "load-mods": true
+  },
+  "logger": {
+    "level": "fine",
+    "ansi-formatting": true
   }
 }
