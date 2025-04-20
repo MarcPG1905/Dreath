@@ -7,6 +7,8 @@ import java.nio.file.Path
 /**
  * Abstract class to be overridden by mods to denote their entry point.
  * This is required for a mod to work and should also be specified inside the `dreath-mod.json` file.
+ * @author MarcPG
+ * @since 0.1.0
  */
 abstract class DreathMod {
     /**

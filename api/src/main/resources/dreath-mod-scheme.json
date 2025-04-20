@@ -70,12 +70,13 @@
           "type": "boolean"
         },
         "load": {
-          "title": "Load Before",
-          "description": "Whether this dependency should be loaded before this mod.",
+          "title": "Load Order",
+          "description": "When this dependency should be loaded in relation to this mod.",
           "type": "string",
           "enum": [
             "before",
-            "after"
+            "after",
+            "auto"
           ]
         }
       }
@@ -164,7 +165,7 @@
       "properties": {
         "dreath": {
           "title": "Dreath",
-          "description": "The Dreath API version.",
+          "description": "The minimum Dreath API version.",
           "type": "string",
           "examples": [
             "1.0.0"

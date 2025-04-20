@@ -5,6 +5,8 @@ import java.util.*
 
 /**
  * Represents any type of command parameter and should not be used raw.
+ * @author MarcPG
+ * @since 0.1.0
  */
 sealed class Parameter<T>(
     open val name: String,
@@ -20,6 +22,8 @@ sealed class Parameter<T>(
  * Represents a command option which has a key and takes a value.
  *
  * This is based on the [Parameter] and extends its functionality.
+ * @author MarcPG
+ * @since 0.1.0
  */
 class Option<T>(
     override val name: String,
@@ -43,6 +47,8 @@ class Option<T>(
  * This can be used for simple [Boolean] values which turn true when present and are false by default.
  *
  * This is based on the [Parameter] and extends its functionality.
+ * @author MarcPG
+ * @since 0.1.0
  */
 class Flag(
     override val name: String,
@@ -55,7 +61,9 @@ class Flag(
 
 /**
  * Represents a full command with subcommands, parameters, etc.
- * This can be registered inside the [CommandManager].
+ * This can be registered inside the [com.marcpg.dreath.util.registry.Registration].
+ * @author MarcPG
+ * @since 0.1.0
  */
 @ConsistentCopyVisibility
 data class Command internal constructor(
@@ -72,6 +80,8 @@ data class Command internal constructor(
 /**
  * Context provided when running a command, including all parameters with their values,
  * what executed this command, and more.
+ * @author MarcPG
+ * @since 0.1.0
  */
 class CommandContext(
     val executor: CommandExecutor
@@ -95,6 +105,8 @@ class CommandContext(
  * but also some utility methods for sending command feedback messages.
  *
  * Usually an entity, user, or the console.
+ * @author MarcPG
+ * @since 0.1.0
  */
 interface CommandExecutor {
     fun location(): Location

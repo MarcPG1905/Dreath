@@ -2,6 +2,8 @@ package com.marcpg.dreath.util
 
 /**
  * A location with double-precision coordinates and a world, which can be nullable.
+ * @author MarcPG
+ * @since 0.1.0
  */
 open class Location(x: Double = 0.0, y: Double = 0.0, z: Double = 0.0, world: Any? = null) { // TODO: Any -> World
     companion object {
@@ -28,3 +30,15 @@ open class Location(x: Double = 0.0, y: Double = 0.0, z: Double = 0.0, world: An
     open var world: Any? = world
         protected set
 }
+
+/**
+ * A mutable location with double-precision coordinates and a world, which can be nullable.
+ * @author MarcPG
+ * @since 0.1.0
+ */
+class MutableLocation(
+    override var x: Double = 0.0,
+    override var y: Double = 0.0,
+    override var z: Double = 0.0,
+    override var world: Any? = null
+) : Location(x, y, z, world)

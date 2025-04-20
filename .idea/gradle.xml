@@ -10,8 +10,15 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/api" />
-            <option value="$PROJECT_DIR$/game" />
-            <option value="$PROJECT_DIR$/mod-example" />
+            <option value="$PROJECT_DIR$/core" />
+            <option value="$PROJECT_DIR$/core/common" />
+            <option value="$PROJECT_DIR$/core/engine" />
+            <option value="$PROJECT_DIR$/core/render" />
+            <option value="$PROJECT_DIR$/environment" />
+            <option value="$PROJECT_DIR$/environment/client" />
+            <option value="$PROJECT_DIR$/environment/server" />
+            <option value="$PROJECT_DIR$/external" />
+            <option value="$PROJECT_DIR$/external/mod-example" />
           </set>
         </option>
       </GradleProjectSettings>
