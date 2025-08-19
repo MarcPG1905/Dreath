@@ -18,6 +18,9 @@
             <option value="$PROJECT_DIR$/environment/client" />
             <option value="$PROJECT_DIR$/environment/server" />
             <option value="$PROJECT_DIR$/external" />
+            <option value="$PROJECT_DIR$/external/cotton" />
+            <option value="$PROJECT_DIR$/external/dreathful-protocol" />
+            <option value="$PROJECT_DIR$/external/launcher" />
             <option value="$PROJECT_DIR$/external/mod-example" />
           </set>
         </option>

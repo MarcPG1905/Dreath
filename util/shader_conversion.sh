@@ -1,18 +1,18 @@
 #!/usr/bin/env bash
 
-# =========================================================================== #
-#                               +++  NOTE: +++                                #
-# The working directory needs to be the project root for this script to work! #
-# =========================================================================== #
+# ================================================================================= #
+#                                   +++  NOTE +++                                   #
+# The working directory needs to be the render module root for this script to work! #
+# ================================================================================= #
 
-echo "$(dirname "$0")"
+BASE_DIR="src/main/resources"
 
-BASE_DIR="game/src/main/resources"
-
-SOURCE="${BASE_DIR}/shader"
-DESTINATION="${BASE_DIR}/shader_compiled"
+SOURCE="${BASE_DIR}/shader_glsl"
+DESTINATION="${BASE_DIR}/shader"
 
 mkdir -p "$DESTINATION"
+
+rm -f "$DESTINATION"/*
 
 # Shader file extensions
 EXTENSIONS=(".glsl" ".vert" ".frag" ".geom" ".tese" ".tesc" ".comp" )

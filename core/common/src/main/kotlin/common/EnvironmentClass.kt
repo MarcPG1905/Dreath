@@ -1,14 +1,13 @@
-package com.marcpg.common
+package common
 
-import com.marcpg.common.util.config.Settings
-import com.marcpg.dreath.log.DreathLogger
+import common.util.config.Settings
+import com.marcpg.dreath.log.LoggerOwnerImpl
 import java.nio.file.Path
 import kotlin.reflect.full.primaryConstructor
 import kotlin.time.TimeMark
 
-abstract class EnvironmentClass {
+abstract class EnvironmentClass : LoggerOwnerImpl() {
     abstract val dir: Path
-    abstract val log: DreathLogger
     abstract val settings: Settings
 
     abstract fun run(start: TimeMark)
@@ -18,9 +17,9 @@ abstract class EnvironmentClass {
 }
 
 enum class Environment(val classPath: String?, val commandArgPath: String?) {
-    CLIENT("com.marcpg.client.Client", "com.marcpg.client.ClientCommandArguments"),
-    SERVER("com.marcpg.server.Server", "com.marcpg.server.ServerCommandArguments"),
-    UNKNOWN(null, "com.marcpg.common.CommandArguments");
+    CLIENT("client.Client", "client.ClientCommandArguments"),
+    SERVER("server.Server", "server.ServerCommandArguments"),
+    UNKNOWN(null, "common.CommandArguments");
 
     fun instance(): EnvironmentClass? {
         return Class.forName(classPath ?: return null)?.kotlin?.objectInstance as? EnvironmentClass

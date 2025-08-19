@@ -1,4 +1,4 @@
-package com.marcpg.common
+package common
 
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.core.main
@@ -9,15 +9,15 @@ import com.github.ajalt.clikt.parameters.options.flag
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.types.enum
 import com.github.ajalt.clikt.parameters.types.path
-import com.marcpg.common.modules.Module
-import com.marcpg.common.util.SystemInfo
+import common.modules.Module
+import common.util.SystemInfo
 import java.io.File
 
 fun main(args: Array<String>) {
     Environment.current().commandArguments()!!.main(args)
 }
 
-abstract class CommandArguments : CliktCommand() {
+abstract class CommandArguments : CliktCommand(name = "dreath") {
     // === Startup Flags ===
     val debug by option("-d", "--debug", help = "Whether debugging output should be sent").flag(default = false)
     val noMods by option("-m", "--no-mods", help = "Skip loading any mods").flag(default = false)

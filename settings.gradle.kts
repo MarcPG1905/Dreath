@@ -14,5 +14,8 @@ include(
     "environment:client",
     "environment:server",
 
+    "external:cotton",
+    "external:dreathful-protocol",
+    "external:launcher",
     "external:mod-example",
 )
