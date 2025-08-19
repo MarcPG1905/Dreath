@@ -3,6 +3,7 @@ package com.marcpg.dreath.event
 /**
  * The event bus to use to register and post events.
  * Usually, a mod will only register events, and only custom features will require posting events.
+ *
  * @author MarcPG
  * @since 0.1.0
  */

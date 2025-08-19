@@ -5,17 +5,20 @@ import com.marcpg.dreath.util.DreathDsl
 /**
  * Utility class for building a command using a simple Kotlin DSL.
  * This provides all options needed for anything from nested commands to flags and options.
+ *
+ * @see command
+ *
+ * @property name This command's name.
+ * @property aliases Optional command aliases besides its [name].
+ * @property description An optional description for this command.
+ *
+ *
  * @author MarcPG
  * @since 0.1.0
  */
 class CommandBuilder(
-    /** This command's name. */
     val name: String,
-
-    /** Optional command aliases besides its [name]. */
     val aliases: List<String> = mutableListOf(),
-
-    /** An optional description for this command. */
     val description: String? = null,
 ) : CommandLike {
     private val subcommands = mutableMapOf<String, Command>()
@@ -31,6 +34,20 @@ class CommandBuilder(
     fun subcommand(name: String, block: CommandBuilder.() -> Unit) {
         val builder = CommandBuilder(name)
         builder.block()
+        subcommands[name] = builder.build()
+    }
+
+    /**
+     * Appends a new sub-command with a set action to this command.
+     * The following block is the action executed when this subcommand is run.
+     *
+     * This does the same as using [subcommand] and setting [action] manually, just in one method.
+     * @see CommandBuilder
+     */
+    @DreathDsl
+    fun action(name: String, block: CommandContext.() -> Unit) {
+        val builder = CommandBuilder(name)
+        builder.action(block)
         subcommands[name] = builder.build()
     }
 
@@ -73,13 +90,14 @@ class CommandBuilder(
      */
     fun build(): Command = Command(name, aliases, description, subcommands, parameters, action)
 
-    override fun asCommand(): Command = build()
+    override operator fun invoke(): Command = build()
 }
 
 /**
  * Utility method for creating a new command builder with given options.
  * An additional block allows for adding other special stuff like parameters, and more.
  * Same as constructing a new [CommandBuilder].
+ *
  * @author MarcPG
  * @since 0.1.0
  */
@@ -91,6 +109,7 @@ fun command(name: String, aliases: List<String> = mutableListOf(), description: 
 /**
  * Utility method for creating a new command builder with given options, but no block.
  * Same as constructing a new [CommandBuilder].
+ *
  * @author MarcPG
  * @since 0.1.0
  */

@@ -25,13 +25,13 @@ abstract class Event {
     open val isCancellable: Boolean = false
 
     /**
-     * If this event is cancelled. Equal to `result.isCancelled`.
+     * If this event is canceled. Equal to `result.isCancelled`.
      * @see Result.isCancelled
      */
     val isCancelled: Boolean get() = result.isCancelled
 
     /**
-     * If this event is cancelled. Equal to `result.isStopped`.
+     * If this event is canceled. Equal to `result.isStopped`.
      * @see Result.isStopped
      */
     val isStopped: Boolean get() = result.isStopped
@@ -48,7 +48,7 @@ enum class Result(
     /** If the result counts as stopped. Currently only [STOP_CHAIN] and [STOP_AND_CANCEL]. */
     val isStopped: Boolean = false,
 
-    /** If the result counts as cancelled. Currently only [CANCEL] and [STOP_AND_CANCEL]. */
+    /** If the result counts as canceled. Currently only [CANCEL] and [STOP_AND_CANCEL]. */
     val isCancelled: Boolean = false,
 ) {
     /** Default - Event is allowed and nothing changes. */
@@ -57,9 +57,9 @@ enum class Result(
     /** Allowed, but no more listeners should be called. */
     STOP_CHAIN({ it.isStoppable }, isStopped = true),
 
-    /** Event is cancelled and all changes should be undone. */
+    /** The event is canceled and all changes should be undone. */
     CANCEL({ it.isCancellable }, isCancelled = true),
 
-    /** Event is cancelled and no more listeners should be called. */
+    /** The event is canceled and no more listeners should be called. */
     STOP_AND_CANCEL({ it.isStoppable && it.isCancellable }, isStopped = true, isCancelled = true),
 }

@@ -5,6 +5,12 @@ import java.util.*
 
 /**
  * Represents any type of command parameter and should not be used raw.
+ *
+ * @property name The name of this parameter.
+ * @property short The short key for this parameter.
+ * @property description The description of this parameter.
+ * @property required Whether this parameter is required or not.
+ *
  * @author MarcPG
  * @since 0.1.0
  */
@@ -22,6 +28,10 @@ sealed class Parameter<T>(
  * Represents a command option which has a key and takes a value.
  *
  * This is based on the [Parameter] and extends its functionality.
+ *
+ * @property converter A function which converts the input string to the desired type.
+ * @property validator A function which validates the parsed value.
+ *
  * @author MarcPG
  * @since 0.1.0
  */
@@ -47,6 +57,7 @@ class Option<T>(
  * This can be used for simple [Boolean] values which turn true when present and are false by default.
  *
  * This is based on the [Parameter] and extends its functionality.
+ *
  * @author MarcPG
  * @since 0.1.0
  */
@@ -62,6 +73,14 @@ class Flag(
 /**
  * Represents a full command with subcommands, parameters, etc.
  * This can be registered inside the [com.marcpg.dreath.util.registry.Registration].
+ *
+ * @property name The name of this command.
+ * @property aliases A list of aliases for this command.
+ * @property description A description of this command.
+ * @property subcommands A map of subcommands for this command.
+ * @property parameters A list of parameters for this command.
+ * @property action The action to run when this command is executed.
+ *
  * @author MarcPG
  * @since 0.1.0
  */
@@ -74,18 +93,20 @@ data class Command internal constructor(
     val parameters: List<Parameter<*>> = emptyList(),
     val action: CommandContext.() -> Unit
 ) : CommandLike {
-    override fun asCommand(): Command = this
+    override operator fun invoke(): Command = this
 }
 
 /**
  * Context provided when running a command, including all parameters with their values,
  * what executed this command, and more.
+ *
+ * @property executor The executor of this command.
+ * @property values A map of all parameters and their values.
+ *
  * @author MarcPG
  * @since 0.1.0
  */
-class CommandContext(
-    val executor: CommandExecutor
-) {
+class CommandContext(val executor: CommandExecutor) {
     private val values = mutableMapOf<String, Any?>()
 
     fun values(): Map<String, Any?> = values
@@ -105,15 +126,26 @@ class CommandContext(
  * but also some utility methods for sending command feedback messages.
  *
  * Usually an entity, user, or the console.
+ *
  * @author MarcPG
  * @since 0.1.0
  */
 interface CommandExecutor {
+    /** Gets the location of this executor. */
     fun location(): Location
+
+    /** Gets the name of this executor. */
     fun name(): String
+
+    /** Gets the locale/language of this executor. */
     fun locale(): Locale
 
+    /** Shows a successful/neutral message to the executor. */
     fun info(raw: String)
+
+    /** Shows a warning message to the executor. */
     fun warn(raw: String)
+
+    /** Shows an error message to the executor. */
     fun error(raw: String)
 }
