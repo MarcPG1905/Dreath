@@ -59,7 +59,7 @@ abstract class DreathMod {
      *
      * **A mod should under no circumstances call this!**
      */
-    fun internalInit(logger: Logger<*>, info: ModInfo) {
+    fun internalInit(logger: DreathLogger, info: ModInfo) {
         this.logger = logger
         this.info = info
         this.modDirectory = File("mods/${info.name}").toPath()

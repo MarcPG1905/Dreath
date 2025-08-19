@@ -1,4 +1,8 @@
+@file:Suppress("NOTHING_TO_INLINE")
+
 package com.marcpg.dreath.util
+
+import com.marcpg.libpg.storing.Cord
 
 /**
  * A location with double-precision coordinates and a world, which can be nullable.
@@ -32,6 +36,8 @@ open class Location(x: Double = 0.0, y: Double = 0.0, z: Double = 0.0, world: Wo
     /** This location's world, or null if none is set. */
     open var world: Any? = world
         protected set
+
+    fun asCord() = Cord(x, y, z)
 }
 
 /**
@@ -45,3 +51,9 @@ class MutableLocation(
     override var z: Double = 0.0,
     override var world: Any? = null
 ) : Location(x, y, z, world)
+
+inline fun locationOf(x: Double, y: Double, z: Double, world: World? = null) = Location(x, y, z, world)
+inline fun mutableLocationOf(x: Double, y: Double, z: Double, world: World? = null) = MutableLocation(x, y, z, world)
+
+inline fun Cord.asLocation(world: World? = null) = Location(x, y, z, world)
+inline fun Cord.asMutableLocation(world: World? = null) = MutableLocation(x, y, z, world)
