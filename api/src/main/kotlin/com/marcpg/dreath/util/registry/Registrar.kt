@@ -1,5 +1,9 @@
 package com.marcpg.dreath.util.registry
 
+import com.marcpg.dreath.command.CommandLike
+import com.marcpg.dreath.event.Event
+import com.marcpg.dreath.world.feature.Feature
+
 /**
  * Any type of registrar, used to register things during startup or at runtime.
  *
@@ -11,8 +15,7 @@ package com.marcpg.dreath.util.registry
  * @since 0.1.0
  */
 interface Registrar<T> {
-    /** This registrar's underlying type. */
-    val type: RegistrarType
+    val type: RegistrarType<T>
 
     /** Registers a new instance to this registrar. */
     fun register(instance: T)
@@ -24,8 +27,15 @@ interface Registrar<T> {
  * @author MarcPG
  * @since 0.1.0
  */
-class RegistrarType private constructor(val name: String) {
+class RegistrarType<T> private constructor(val name: String) {
     companion object {
-        val COMMANDS = RegistrarType("commands")
+        /** Registrar for commands using the [com.marcpg.dreath.command.CommandBuilder] DSL via [com.marcpg.dreath.command.command]. */
+        val COMMANDS = RegistrarType<CommandLike>("commands")
+
+        /** Registrar for global features applied to each world at the end of all features. */
+        val FEATURES = RegistrarType<Feature>("features")
+
+        /** Registrar for custom events extending [Event]. */
+        val EVENTS = RegistrarType<Event>("events")
     }
 }
