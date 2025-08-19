@@ -2,7 +2,11 @@ package com.marcpg.dreath.util.registry
 
 /**
  * Any type of registrar, used to register things during startup or at runtime.
+ *
  * @see Registration
+ *
+ * @property type This registrar's underlying type.
+ *
  * @author MarcPG
  * @since 0.1.0
  */
@@ -10,9 +14,7 @@ interface Registrar<T> {
     /** This registrar's underlying type. */
     val type: RegistrarType
 
-    /**
-     * Registers a new instance to this registrar.
-     */
+    /** Registers a new instance to this registrar. */
     fun register(instance: T)
 }
 

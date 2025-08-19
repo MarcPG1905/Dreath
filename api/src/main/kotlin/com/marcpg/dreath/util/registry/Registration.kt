@@ -34,7 +34,7 @@ object Registration {
     /**
      * Initialization method used by the internal game.
      *
-     * **This should under no circumstances be called by a mod!**
+     * **A mod should under no circumstances call This!**
      */
     fun initialize(map: Map<RegistrarType, Registrar<*>>) {
         REGISTRARS = map

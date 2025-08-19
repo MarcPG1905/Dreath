@@ -1,12 +1,18 @@
 package com.marcpg.dreath
 
-import com.marcpg.libpg.log.Logger
+import com.marcpg.dreath.log.DreathLogger
 import java.io.File
 import java.nio.file.Path
 
 /**
  * Abstract class to be overridden by mods to denote their entry point.
  * This is required for a mod to work and should also be specified inside the `dreath-mod.json` file.
+ *
+ * @property logger This mod's current logger.
+ * @property info This mod's loaded info from the `dreath-mod.json` file.
+ * @property modDirectory This mod's base directory. Usually `./mods/<mod-id>/`.
+ * @property dataDirectory This mod's data directory. Usually `./mods/<mod-id>/data/`.
+ *
  * @author MarcPG
  * @since 0.1.0
  */
@@ -23,21 +29,10 @@ abstract class DreathMod {
     private var _enabling = false
     private var _disabling = false
 
-    /** This mod's current logger. */
-    lateinit var logger: Logger<*>
-        private set
-
-    /** This mod's loaded info from the `dreath-mod.json` file. */
-    lateinit var info: ModInfo
-        private set
-
-    /** This mod's base directory. Usually `./mods/<mod-id>/`. */
-    lateinit var modDirectory: Path
-        private set
-
-    /** This mod's data directory. Usually `./mods/<mod-id>/data/`. */
-    lateinit var dataDirectory: Path
-        private set
+    lateinit var logger: DreathLogger   private set
+    lateinit var info: ModInfo          private set
+    lateinit var modDirectory: Path     private set
+    lateinit var dataDirectory: Path    private set
 
     /**
      * Called when the game starts and this mod was just loaded.
@@ -62,7 +57,7 @@ abstract class DreathMod {
     /**
      * Method called by the internal game to initialize this mod.
      *
-     * **This should under no circumstances be called by a mod!**
+     * **A mod should under no circumstances call this!**
      */
     fun internalInit(logger: Logger<*>, info: ModInfo) {
         this.logger = logger
@@ -76,14 +71,14 @@ abstract class DreathMod {
     /**
      * Method called by the internal game to re-initialize this mod.
      *
-     * **This should under no circumstances be called by a mod!**
+     * **A mod should under no circumstances call this!**
      */
     fun internalReInit() = init()
 
     /**
      * Method called by the internal game to enable this mod.
      *
-     * **This should under no circumstances be called by a mod!**
+     * **A mod should under no circumstances call this!**
      */
     fun internalEnable() {
         _enabling = true
@@ -95,7 +90,7 @@ abstract class DreathMod {
     /**
      * Method called by the internal game to disable this mod.
      *
-     * **This should under no circumstances be called by a mod!**
+     * **A mod should under no circumstances call this!**
      */
     fun internalDisable() {
         _disabling = true

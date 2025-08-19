@@ -1,110 +1,83 @@
 package com.marcpg.dreath
 
-import java.net.URI
-import kotlin.reflect.KClass
-
 /**
  * Represents information for a mod stripped from its `dreath-mod.json` file.
  *
  * It includes this information:
- * - Unique ID
- * - Name
- * - Version
- * - Description
- * - Main Class Reference
- * - Developer List
- * - Contact Information
- * - Dependency List
+ * @property id A mod ID for internal identification, which should be unique.
+ * @property name A mod name that will be displayed to the user.
+ * @property version The current version of your mod.
+ * @property description A short description of your mod and what it does.
+ * @property main Class path to the mod's main class.
+ * @property developers List of developers who worked on this mod.
+ * @property contact All contact links related to this mod.
+ * @property dependencies List of dependencies for this mod.
+ *
  * @author MarcPG
  * @since 0.1.0
  */
 data class ModInfo(
-    /** A mod ID for internal identification, which should be unique. */
     val id: String,
-
-    /** A mod name that will be displayed to the user. */
     val name: String,
-
-    /** The current version of your mod. */
     val version: String,
-
-    /** A short description of your mod and what it does. */
     val description: String,
-
-    /** Class path to the mod's main class. */
-    val main: KClass<out DreathMod>,
-
-    /** List of developers who worked on this mod. */
+    val main: kotlin.reflect.KClass<out DreathMod>,
     val developers: List<String>,
-
-    /** All contact links related to this mod. */
     val contact: Contact,
-
-    /** List of dependencies for this mod. */
     val dependencies: Dependencies
 ) {
     /**
      * Represents contact information for a mod stripped from its `dreath-mod.json` file.
      *
      * It includes this information:
-     * - Website Link
-     * - Discord Server Invite
-     * - EMail Address
-     * - Source Code Link
-     * - Additional Extra Links
+     * @property website Link to this mod's website.
+     * @property discord A discord server invite.
+     * @property email Email address for support regarding this mod.
+     * @property source Link to this mod's source code. Usually GitHub, GitLab, or Bitbucket.
+     * @property extra Additional links that are not one of the types above.
+     *
+     * @author MarcPG
+     * @since 0.1.0
      */
     data class Contact(
-        /** Link to this mod's website. */
-        val website: URI,
-
-        /** A discord server invite. */
-        val discord: URI,
-
-        /** Email address for support regarding this mod. */
+        val website: java.net.URI,
+        val discord: java.net.URI,
         val email: String,
-
-        /** Link to this mod's source code. Usually GitHub, GitLab, or Bitbucket. */
-        val source: URI,
-
-        /** Additional links that are not one of the types above. */
-        val extra: List<URI>
+        val source: java.net.URI,
+        val extra: List<java.net.URI>,
     )
 
     /**
      * Represents dependencies for a mod stripped from its `dreath-mod.json` file.
      *
      * It includes this information:
-     * - Required Dreath Version
-     * - External Dependencies
+     * @property dreath The minimum Dreath API version.
+     * @property external List of external dependencies, which are also mods.
+     *
+     * @author MarcPG
+     * @since 0.1.0
      */
     data class Dependencies(
-        /** The minimum Dreath API version. */
         val dreath: String,
-
-        /** List of external dependencies, which are also mods. */
-        val external: List<Dependency>
+        val external: List<Dependency>,
     ) {
         /**
          * Represents a single dependency linking to another mod.
          *
          * It includes this information:
-         * - Unique ID
-         * - Minimum Required Version
-         * - If Required
-         * - Load Order
+         * @property id The mod ID of the dependency.
+         * @property minVersion The minimum version of the dependency.
+         * @property required Whether this dependency is required.
+         * @property load When this dependency should be loaded in relation to this mod.
+         *
+         * @author MarcPG
+         * @since 0.1.0
          */
         data class Dependency(
-            /** This dependency's mod ID. */
             val id: String,
-
-            /** The minimum version of this dependency. */
             val minVersion: String,
-
-            /** Whether this dependency is required. */
             val required: Boolean,
-
-            /** When this dependency should be loaded in relation to this mod. */
-            val load: LoadOrder
+            val load: LoadOrder,
         ) {
             /**
              * Represents a load order for a dependency in relation to the current mod.
