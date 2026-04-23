@@ -14,7 +14,7 @@ abstract class Event {
      */
     var result: Result = Result.ALLOW
         set(value) {
-            require(value.predicate(this)) { "${javaClass.name} does not allow result $value!" }
+            require(value.predicate(this)) { "'${javaClass.name}' does not allow result $value!" }
             field = value
         }
 
