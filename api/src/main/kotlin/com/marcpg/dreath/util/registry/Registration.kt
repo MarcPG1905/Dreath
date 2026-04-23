@@ -19,7 +19,7 @@ object Registration {
      * Registers a single instance to the specified registrar type.
      */
     fun <T> register(type: RegistrarType<T>, instance: T) {
-        require(type in REGISTRARS) { "No registrar found for type ${type.name}" }
+        require(type in REGISTRARS) { "No registrar found for type '${type.name}'" }
 
         val registrar = REGISTRARS[type] as Registrar<T>
         registrar.register(instance)
@@ -29,10 +29,20 @@ object Registration {
      * Registers multiple instances to the specified registrar type.
      */
     fun <T> register(type: RegistrarType<T>, instances: Iterable<T>) {
-        require(type in REGISTRARS) { "No registrar found for type ${type.name}" }
+        require(type in REGISTRARS) { "No registrar found for type '${type.name}'" }
 
         val registrar = REGISTRARS[type] as Registrar<T>
         instances.forEach { registrar.register(it) }
+    }
+
+    /**
+     * Gets all instances stored in the specified registry.
+     */
+    fun <T> getInstances(type: RegistrarType<T>): List<T> {
+        require(type in REGISTRARS) { "No registrar found for type '${type.name}'" }
+
+        val registrar = REGISTRARS[type] as Registrar<T>
+        return registrar.loaded()
     }
 
     /**

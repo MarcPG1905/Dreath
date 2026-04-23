@@ -19,6 +19,9 @@ interface Registrar<T> {
 
     /** Registers a new instance to this registrar. */
     fun register(instance: T)
+
+    /** Returns a list of all loaded instances. */
+    fun loaded(): List<T>
 }
 
 /**
