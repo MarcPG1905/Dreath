@@ -1,4 +1,4 @@
-package com.marcpg.dreath.util
+package com.marcpg.dreath.util.vector
 
 import java.io.Serializable
 import kotlin.math.max
@@ -76,7 +76,7 @@ data class IntCord(val x: Double, val y: Double, val z: Double) : Serializable {
      * @return `true` if this [IntCord] is inside the bounds, `false` otherwise.
      */
     fun inBounds(lowX: Double, highX: Double, lowY: Double, highY: Double, lowZ: Double, highZ: Double): Boolean {
-        return x >= lowX && x <= highX && y >= lowY && y <= highY && z >= lowZ && z <= highZ
+        return x in lowX..highX && y in lowY..highY && z in lowZ..highZ
     }
 
     companion object {

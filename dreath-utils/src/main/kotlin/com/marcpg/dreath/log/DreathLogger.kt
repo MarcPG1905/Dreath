@@ -21,7 +21,10 @@ import java.util.*
  * @author MarcPG
  * @since 0.1.0
  */
-class DreathLogger internal constructor(override val name: String, private val logFileStream: PrintStream) : Logger<PrintStream>(DreathLoggerFactory.actualSystemOut), Receiver {
+class DreathLogger internal constructor(
+    override val name: String,
+    private val logFileStream: PrintStream
+) : Logger<PrintStream>(DreathLoggerFactory.actualSystemOut), Receiver {
     companion object {
         private val DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("dd-MM HH:mm:ss")
         private const val LOG_LEVEL_LENGTH = 4
@@ -31,7 +34,7 @@ class DreathLogger internal constructor(override val name: String, private val l
          *
          * This can be modified at runtime and will take effect immediately after changed.
          */
-        var logLevel = LogLevel.FINE
+        var logLevel: CustomLogLevel = LogLevel.FINE
 
         /**
          * If the logs should use ANSI formatting in the console.
@@ -90,7 +93,7 @@ class DreathLogger internal constructor(override val name: String, private val l
         e.printStackTrace(this)
     }
 
-    private fun log(level: LogLevel, msg: String?) {
+    internal fun log(level: CustomLogLevel, msg: String?) {
         if (msg == null) return
 
         val timestamp = LocalDateTime.now().format(DATE_TIME_FORMATTER)
@@ -103,20 +106,20 @@ class DreathLogger internal constructor(override val name: String, private val l
         logFileStream.println(raw)
     }
 
-    override fun sendChat(msg: Boll) = info(msg.renderAnsi(this))
+    override fun sendChat(msg: Boll) = info(msg.renderAnsi(this) + Ansi.RESET)
 
     override fun sendToast(title: Boll, msg: Boll, stay: Time) {
-        info(Ansi.bold(title.renderAnsi(this)))
-        info("> " + msg.renderAnsi(this))
+        info(Ansi.bold(title.renderAnsi(this) + Ansi.RESET))
+        info("> " + msg.renderAnsi(this) + Ansi.RESET)
     }
 
     override fun sendTitle(title: Boll, subtitle: Boll?, stay: Time) {
-        info(Ansi.bold(title.renderAnsi(this)))
+        info(Ansi.bold(title.renderAnsi(this) + Ansi.RESET))
         if (subtitle != null)
-            info("> " + subtitle.renderAnsi(this))
+            info("> " + subtitle.renderAnsi(this) + Ansi.RESET)
     }
 
-    override fun displayMessage(msg: Boll, stay: Time, posX: Double, posY: Double) = info(msg.renderAnsi(this))
+    override fun displayMessage(msg: Boll, stay: Time, posX: Double, posY: Double) = info(msg.renderAnsi(this) + Ansi.RESET)
 
     // Cannot clear console stuff.
     override fun clearChat() {}
@@ -136,28 +139,57 @@ fun Throwable.printStackTrace(log: Logger<*>) {
 }
 
 /**
+ * Prints a throwable to a specified logger, by getting the stack trace and
+ * logging each line to the specified logger at [error level][LogLevel.ERROR].
+ * @param log The logger to print the stack trace to.
+ */
+fun Throwable.printStackTraceFine(log: DreathLogger) {
+    stackTraceToString().split("\n").forEach { log.fine(it) }
+}
+
+/**
  * Represents a logging level which can be used for getting ANSI formatting,
  * short versions, and filtering them based on weight.
  *
  * @author MarcPG
  * @since 0.1.0
  */
-enum class LogLevel(val abb: String, val ansi: String, val weight: Int) {
-    /** Debugging stuff for testing. */
-    FINE("FINE", Ansi.GRAY.get(), 0),
+interface CustomLogLevel {
+    /** The abbreviation used in the console and log file. Should not be longer than 4 characters. */
+    val abb: String
 
+    /** The ansi formatting to be used for any logs with this level. */
+    val ansi: String
+
+    /** The weight used for including/excluding certain levels. A higher level is more likely to be shown. */
+    val weight: Int
+}
+
+/**
+ * A preset enum of some default [CustomLogLevel] implementations used for the [DreathLogger].
+ *
+ * @author MarcPG
+ * @since 0.1.0
+ */
+enum class LogLevel(override val abb: String, override val ansi: String, override val weight: Int) : CustomLogLevel {
     /** Configuration-related things, system properties, etc. */
     CONFIG("CONF", Ansi.DARK_GRAY.get(), 0),
+
+    /** Debugging stuff for testing. */
+    FINE("FINE", Ansi.GRAY.get(), 0),
 
     /** Notification that something was successful. */
     SUCCESS("DONE", Ansi.LIME.get(), 1),
 
+    /** Usage of [System.out], which should not be done. */
+    SYSTEM_OUT("SOUT", Ansi.BROWN.get(), 5),
+
     /** Normal logging. */
-    INFO("INFO", Ansi.WHITE.get(), 1),
+    INFO("INFO", Ansi.WHITE.get(), 5),
 
     /** Something that went wrong but won't cause lasting damage. */
-    WARN("WARN", Ansi.YELLOW.get(), 2),
+    WARN("WARN", Ansi.YELLOW.get(), 10),
 
     /** Something that went wrong and may cause lasting damage, or even require stopping the application. */
-    ERROR("ERR", Ansi.RED.get(), 3)
+    ERROR("ERR", Ansi.RED.get(), 15)
 }

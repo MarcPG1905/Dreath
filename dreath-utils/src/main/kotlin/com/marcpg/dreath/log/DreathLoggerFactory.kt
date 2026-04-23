@@ -1,6 +1,8 @@
 package com.marcpg.dreath.log
 
-import com.marcpg.dreath.util.MultiOutputStream
+import com.marcpg.dreath.log.DreathLoggerFactory.actualSystemOut
+import com.marcpg.dreath.util.CallOriginCheck
+import com.marcpg.dreath.util.io.ReplacedPrintStream
 import java.io.PrintStream
 import java.nio.file.Files
 import java.nio.file.Path
@@ -23,19 +25,19 @@ object DreathLoggerFactory {
     private lateinit var logFileStream: PrintStream
     private lateinit var main: DreathLogger
 
-    internal val actualSystemOut = System.out
-    private val customSystemOut = MultiOutputStream()
+    internal var actualSystemOut: PrintStream = System.out
+    private val customSystemOut = LoggerOutputStream(actualSystemOut)
 
     private val loaded: MutableMap<String, DreathLogger> = mutableMapOf()
 
     /**
      * Initializes this [DreathLogger] factory.
      *
-     * **A mod should under no circumstances call This!**
+     * **A mod should under no circumstances call this!**
      */
     fun initialize(logFolder: Path) {
-        if (this::main.isInitialized)
-            throw IllegalStateException("DreathLoggerFactory already initialized")
+        CallOriginCheck.require(setOf("common.Game"))
+        require(!::main.isInitialized) { "DreathLoggerFactory already initialized" }
 
         val logFile = logFolder.createDirectories().resolve("current.log")
 
@@ -54,16 +56,35 @@ object DreathLoggerFactory {
             Files.deleteIfExists(logFile)
         }
 
-        logFileStream = PrintStream(Files.newOutputStream(logFile, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.SYNC))
+        logFileStream = PrintStream(Files.newOutputStream(logFile, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING))
 
-        customSystemOut.addOutputStream(logFileStream)
-        System.setOut(PrintStream(customSystemOut))
+        System.setOut(customSystemOut)
 
         main = create("Common")
+        customSystemOut.logger = main
+    }
+
+    /**
+     * Sets the [actualSystemOut] variable, which is what all logs are sent to under the hood.
+     * This is usually either [System.out] or a custom [PrintStream] of a console manager like JLine.
+     *
+     * **A mod should under no circumstances call this!**
+     */
+    fun setActualSystemOut(stream: PrintStream) {
+        CallOriginCheck.require(setOf("server.console.Console"))
+        require(::main.isInitialized) { "DreathLoggerFactory not yet initialized" }
+
+        actualSystemOut = stream
     }
 
     internal fun create(name: String): DreathLogger {
         return loaded.getOrPut(name) { DreathLogger(name, logFileStream) }
+    }
+}
+
+private class LoggerOutputStream(actual: PrintStream, var logger: DreathLogger? = null) : ReplacedPrintStream(actual) {
+    override fun replacement(any: Any?) {
+        logger?.log(LogLevel.SYSTEM_OUT, any?.toString())
     }
 }
 
