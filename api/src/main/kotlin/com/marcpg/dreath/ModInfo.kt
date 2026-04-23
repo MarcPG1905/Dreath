@@ -1,5 +1,7 @@
 package com.marcpg.dreath
 
+import com.marcpg.dreath.util.SimpleVersion
+
 /**
  * Represents information for a mod stripped from its `dreath-mod.json` file.
  *
@@ -19,7 +21,7 @@ package com.marcpg.dreath
 data class ModInfo(
     val id: String,
     val name: String,
-    val version: String,
+    val version: SimpleVersion,
     val description: String,
     val main: kotlin.reflect.KClass<out DreathMod>,
     val developers: List<String>,
@@ -58,7 +60,7 @@ data class ModInfo(
      * @since 0.1.0
      */
     data class Dependencies(
-        val dreath: String,
+        val dreath: SimpleVersion,
         val external: List<Dependency>,
     ) {
         /**
@@ -75,7 +77,7 @@ data class ModInfo(
          */
         data class Dependency(
             val id: String,
-            val minVersion: String,
+            val minVersion: SimpleVersion,
             val required: Boolean,
             val load: LoadOrder,
         ) {

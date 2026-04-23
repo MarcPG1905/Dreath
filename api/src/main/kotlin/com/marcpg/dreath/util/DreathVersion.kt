@@ -11,7 +11,7 @@ package com.marcpg.dreath.util
  * - Module Name **!**
  * - Version **!** - Major, minor, patch, each `0`-`255`
  * - Release Type - [ReleaseType.ALPHA], [ReleaseType.BETA], [ReleaseType.RELEASE]
- * - Required JVM Version - Only first part, e.g., 8; 11; 17; 21
+ * - Required JVM Version - Only first part, e.g., 8; 11; 17; 21; 24
  *
  * These fields are derived from the above fields but can also be specified manually:
  *
@@ -98,6 +98,12 @@ data class DreathVersion(
     operator fun compareTo(other: String): Int {
         return verPacked.compareTo(packVersion(other))
     }
+
+    /**
+     * Converts this complex [DreathVersion] to a [SimpleVersion],
+     * which only has major, minor, and patch, without any of the extra fluff.
+     */
+    fun toSimpleVersion(): SimpleVersion = SimpleVersion(ver.first.toInt(), ver.second.toInt(), ver.third.toInt())
 
     /**
      * Converts this version to a [String].
