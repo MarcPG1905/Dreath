@@ -97,29 +97,3 @@ fun resolveDiscordInvite(input: String): URI? {
         URI("https://discord.gg/${it[1]}")
     }
 }
-
-fun ULong.toByteArray(): ByteArray {
-    return ByteArray(8) { index ->
-        (this shr (56 - index * 8) and 0xFFu).toByte()
-    }
-}
-
-fun ByteArray.toULong(): ULong {
-    var result = 0UL
-    for (i in 0 until 8) {
-        result = result or (this[i].toULong() shl (8 * (7 - i)))
-    }
-    return result
-}
-
-fun String.makeCapitalized(): String {
-    return lowercase().replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
-}
-
-fun String.truncate(maxLength: Int = 48): String {
-    return if (length <= maxLength) this else take(maxLength - 3) + "..."
-}
-
-inline fun <reified T : Enum<T>> enumValueNoCase(name: String): T =
-    enumValues<T>().firstOrNull { it.name.equals(name, ignoreCase = true) }
-        ?: throw IllegalArgumentException("No enum constant ${T::class.qualifiedName}.$name")
