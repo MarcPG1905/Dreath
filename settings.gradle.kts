@@ -19,6 +19,9 @@ include(
 
     "external:cotton",
     "external:dreathful-protocol",
-    "external:launcher",
     "external:mod-example",
+)
+
+includeBuild(
+    "external/dreath-gradle-plugin",
 )
