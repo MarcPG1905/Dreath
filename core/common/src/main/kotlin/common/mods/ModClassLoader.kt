@@ -1,6 +1,7 @@
-package com.marcpg.common.mods
+package common.mods
 
-import com.marcpg.common.Game
+import common.Game
+import common.util.javaClassLoader
 import java.io.File
 import java.net.URLClassLoader
 import kotlin.reflect.KClass
@@ -9,7 +10,7 @@ object ModClassLoader {
     private val CLASS_LOADERS = mutableMapOf<String, ClassLoader>()
 
     fun loadClass(file: File, className: String, id: String): KClass<out Any> {
-        val classLoader = CLASS_LOADERS.getOrPut(id) { URLClassLoader(id, arrayOf(file.toURI().toURL()), Game::class.java.classLoader) }
+        val classLoader = CLASS_LOADERS.getOrPut(id) { URLClassLoader(id, arrayOf(file.toURI().toURL()), Game.javaClassLoader) }
         return Class.forName(className, true, classLoader).kotlin
     }
 }

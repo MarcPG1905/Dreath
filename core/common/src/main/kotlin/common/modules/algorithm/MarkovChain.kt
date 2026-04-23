@@ -1,4 +1,4 @@
-package com.marcpg.common.modules.algorithm
+package common.modules.algorithm
 
 class MarkovChain(
     samples: List<String>,

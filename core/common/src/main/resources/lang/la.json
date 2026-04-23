@@ -1,0 +1,21 @@
+{
+  "meta": {
+    "mod": "dreath",
+    "lang": [ "la" ],
+    "fallback": [ "en" ],
+    "info": {
+      "native": {
+        "name": "Latinus",
+        "description": "Latina in Urbe Vaticana et Roma Antiqua loquebantur."
+      },
+      "international": {
+        "name": "Latin",
+        "description": "Latin as used in the Vatican City nowadays or ancient Rome 2000 years ago."
+      }
+    }
+  },
+  "translations": {
+    "Dreath": "Dreath",
+    "Ultra-realistic survival game by MarcPG.": "Lusus ultra-realisticus superstes a MarcPG."
+  }
+}

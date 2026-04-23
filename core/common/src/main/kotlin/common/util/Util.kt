@@ -1,36 +1,8 @@
-package com.marcpg.common.util
+package common.util
 
-import com.marcpg.common.Environment
-import com.marcpg.common.Game
-import java.io.BufferedReader
-import java.io.File
+import common.Environment
 import java.net.URI
-import java.nio.file.Files
-import java.nio.file.Path
-import java.util.*
 import kotlin.io.path.absolutePathString
-
-object ResourceUtil {
-    fun readLinesFromResource(name: String): List<String> {
-        val stream = Game::class.java.getResourceAsStream("/$name") ?: throw IllegalStateException("No $name in attached resources.")
-        return stream.bufferedReader().use(BufferedReader::readLines)
-    }
-
-    fun readBytesFromResource(name: String): ByteArray {
-        val stream = Game::class.java.getResourceAsStream("/$name") ?: throw IllegalStateException("No $name in attached resources.")
-        return stream.readAllBytes()
-    }
-
-    fun saveResource(name: String, destination: Path) {
-        Game::class.java.getResourceAsStream("/$name").use { stream ->
-            Files.copy(stream ?: throw IllegalStateException("No $name in attached resources."), destination)
-        }
-    }
-
-    fun saveResource(name: String, destination: File) {
-        saveResource(name, destination.toPath())
-    }
-}
 
 object SystemInfo {
     fun jvm() : String {
@@ -49,17 +21,17 @@ object SystemInfo {
         return System.getProperty(key, def)
     }
 
-    enum class OperatingSystem(val displayName: String, val company: String?, val device: String?, val group: Group, val platform: Platform) {
-        WINDOWS("Windows", "Microsoft", null, Group.WINDOWS_NT, Platform.DESKTOP),
-        LINUX("Linux", null, null, Group.UNIX, Platform.DESKTOP),
-        MAC_OS("macOS", "Apple", "Mac", Group.UNIX, Platform.DESKTOP),
-        ANDROID("Android", "Google", null, Group.UNIX, Platform.MOBILE),
-        IOS("iOS", "Apple", "iPhone", Group.UNIX, Platform.MOBILE),
-        FREEBSD("FreeBSD", null, null, Group.UNIX, Platform.DESKTOP),
-        CHROME_OS("ChromeOS", "Google", "Chromebook", Group.UNIX, Platform.DESKTOP),
-        HORIZON_OS("Horizon OS", "Nintendo", "Nintendo Switch", Group.OTHER, Platform.CONSOLE),
-        ORBIS_OS("Orbis OS", "Sony", "PlayStation 4", Group.UNIX, Platform.CONSOLE),
-        UNKNOWN("Unknown", null, null, Group.OTHER, Platform.OTHER);
+    enum class OperatingSystem(val displayName: String, val company: String?, val device: String?, val libraryFileName: (String) -> String, val group: Group, val platform: Platform) {
+        WINDOWS("Windows", "Microsoft", null, { "$it.dll" }, Group.WINDOWS_NT, Platform.DESKTOP),
+        LINUX("Linux", null, null, { "lib$it.so" }, Group.UNIX, Platform.DESKTOP),
+        MAC_OS("macOS", "Apple", "Mac", { "lib$it.dylib" }, Group.UNIX, Platform.DESKTOP),
+        ANDROID("Android", "Google", null, { "lib$it.so" }, Group.UNIX, Platform.MOBILE),
+        IOS("iOS", "Apple", "iPhone", { "lib$it.dylib" }, Group.UNIX, Platform.MOBILE),
+        FREEBSD("FreeBSD", null, null, { "lib$it.so" }, Group.UNIX, Platform.DESKTOP),
+        CHROME_OS("ChromeOS", "Google", "Chromebook", { "lib$it.so" }, Group.UNIX, Platform.DESKTOP),
+        HORIZON_OS("Horizon OS", "Nintendo", "Nintendo Switch", { "$it.dll" }, Group.OTHER, Platform.CONSOLE),
+        ORBIS_OS("Orbis OS", "Sony", "PlayStation 4", { "lib$it.sprx" }, Group.UNIX, Platform.CONSOLE),
+        UNKNOWN("Unknown", null, null, { it }, Group.OTHER, Platform.OTHER);
 
         companion object {
             fun ofOsName(name: String = System.getProperty("os.name")): OperatingSystem {

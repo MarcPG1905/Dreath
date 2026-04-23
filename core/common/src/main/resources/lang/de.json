@@ -1,0 +1,21 @@
+{
+  "meta": {
+    "mod": "dreath",
+    "lang": [ "de" ],
+    "fallback": [ "en" ],
+    "info": {
+      "native": {
+        "name": "Deutsch",
+        "description": "Deutsch, wie in Deutschland, Östereich und der Schweiz gesprochen."
+      },
+      "international": {
+        "name": "German",
+        "description": "German without dialect, also called High-German."
+      }
+    }
+  },
+  "translations": {
+    "Dreath": "Dreath",
+    "Ultra-realistic survival game by MarcPG.": "Ultra-realistisches Überlebensspiel von MarcPG"
+  }
+}

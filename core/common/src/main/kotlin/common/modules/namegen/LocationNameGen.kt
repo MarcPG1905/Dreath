@@ -1,7 +1,8 @@
-package com.marcpg.common.modules.namegen
+package common.modules.namegen
 
-import com.marcpg.common.util.ResourceUtil
-import com.marcpg.common.modules.algorithm.MarkovChain
+import com.marcpg.libpg.util.readLinesFromResource
+import common.Game
+import common.modules.algorithm.MarkovChain
 
 object LocationNameGen {
     enum class LocationType(val nameLength: Int, val minPop: Int, val minBuildings: Int) {
@@ -18,6 +19,6 @@ object LocationNameGen {
     }
 
     fun generate(type: LocationType): String {
-        return MarkovChain(ResourceUtil.readLinesFromResource("dataset/location-names/${type.name.lowercase()}"), 2).generate(type.nameLength)
+        return MarkovChain(Game::class.readLinesFromResource("dataset/location-names/${type.name.lowercase()}"), 2).generate(type.nameLength)
     }
 }

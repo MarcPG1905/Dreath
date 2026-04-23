@@ -1,0 +1,21 @@
+{
+  "meta": {
+    "mod": "dreath",
+    "lang": [ "en" ],
+    "fallback": null,
+    "info": {
+      "native": {
+        "name": "English",
+        "description": "English spoken around the world."
+      },
+      "international": {
+        "name": "English",
+        "description": "English spoken around the world."
+      }
+    }
+  },
+  "translations": {
+    "Dreath": "Dreath",
+    "Ultra-realistic survival game by MarcPG.": "Ultra-realistic survival game by MarcPG"
+  }
+}

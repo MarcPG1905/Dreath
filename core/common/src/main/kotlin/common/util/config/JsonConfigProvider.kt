@@ -3,8 +3,9 @@ package common.util.config
 import com.marcpg.libpg.config.ConfigEntry
 import com.marcpg.libpg.config.ConfigProvider
 import com.marcpg.libpg.config.ConfigValueType
+import com.marcpg.libpg.util.saveResource
+import common.Game
 import common.util.InternalConstants
-import common.util.ResourceUtil
 import kotlinx.serialization.json.*
 import java.nio.file.Path
 import kotlin.io.path.readText
@@ -36,7 +37,7 @@ open class JsonConfigProvider(
     }
 
     override fun saveDefault(entries: Map<String, ConfigEntry<*>>) {
-        ResourceUtil.saveResource(resource, path)
+        Game::class.saveResource(resource, path)
         load()
         if (entries.isNotEmpty()) {
             entries.forEach { (key, entry) ->

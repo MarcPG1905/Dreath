@@ -1,8 +1,8 @@
-package com.marcpg.client
+package client
 
 import com.marcpg.dreath.log.DreathLogger
 import com.marcpg.dreath.log.dreathLogger
-import com.marcpg.common.util.Constants
+import com.marcpg.dreath.util.Constants
 import io.github.vyfor.kpresence.RichClient
 import io.github.vyfor.kpresence.event.ReadyEvent
 import io.github.vyfor.kpresence.logger.ILogger
@@ -24,7 +24,7 @@ object DiscordRichPresence {
 }
 
 /**
- * Utility wrapper forwarding [ILogger] to the game's [DreathLogger].
+ * Utility wrapper forwarding [ILogger] to the game's [com.marcpg.dreath.log.DreathLogger].
  * This ignores all messages except for warnings and errors.
  */
 internal class ILoggerWrapper(private val logger: DreathLogger) : ILogger {
@@ -35,8 +35,5 @@ internal class ILoggerWrapper(private val logger: DreathLogger) : ILogger {
     override fun warn(message: String) = logger.warn(message)
     override fun error(message: String) = logger.error(message)
 
-    override fun error(message: String, throwable: Throwable) {
-        logger.error(message)
-        throwable.printStackTrace()
-    }
+    override fun error(message: String, throwable: Throwable) = logger.error(message, throwable)
 }

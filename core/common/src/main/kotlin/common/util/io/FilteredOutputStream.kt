@@ -1,10 +1,10 @@
-package com.marcpg.common.util.io
+package common.util.io
 
 import java.io.OutputStream
 import java.io.PrintStream
 import java.util.*
 
-class FilteredOutputStream(private val out: OutputStream) : PrintStream(out) {
+class FilteredOutputStream(out: OutputStream) : PrintStream(out) {
     companion object {
         val filters = mutableListOf<Regex>()
     }
