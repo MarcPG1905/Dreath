@@ -1,5 +1,7 @@
 package com.marcpg.dreath.util.registry
 
+import com.marcpg.dreath.util.CallOriginCheck
+
 /**
  * A utility class for registering things during startup or at runtime.
  * This will automatically figure out which [Registrar] to use based on the provided [RegistrarType].
@@ -36,9 +38,11 @@ object Registration {
     /**
      * Initialization method used by the internal game.
      *
-     * **A mod should under no circumstances call This!**
+     * **A mod should under no circumstances call this!**
      */
     fun initialize(map: Map<RegistrarType<*>, Registrar<*>>) {
+        CallOriginCheck.require(setOf("client.Client", "server.Server"))
+
         REGISTRARS = map
     }
 }

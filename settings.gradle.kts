@@ -9,6 +9,7 @@ pluginManagement {
 
 include(
     "api",
+    "dreath-utils",
 
     "core:common",
     "core:engine",

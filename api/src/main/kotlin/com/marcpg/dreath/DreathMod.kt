@@ -1,6 +1,7 @@
 package com.marcpg.dreath
 
 import com.marcpg.dreath.log.DreathLogger
+import com.marcpg.dreath.util.CallOriginCheck
 import java.io.File
 import java.nio.file.Path
 
@@ -60,6 +61,8 @@ abstract class DreathMod {
      * **A mod should under no circumstances call this!**
      */
     fun internalInit(logger: DreathLogger, info: ModInfo) {
+        CallOriginCheck.require(setOf("common.mods.ModLoader"))
+
         this.logger = logger
         this.info = info
         this.modDirectory = File("mods/${info.name}").toPath()
@@ -73,7 +76,12 @@ abstract class DreathMod {
      *
      * **A mod should under no circumstances call this!**
      */
-    fun internalReInit() = init()
+    fun internalReInit() {
+        CallOriginCheck.require(setOf("common.mods.ModLoader"))
+
+        init()
+        internalEnable()
+    }
 
     /**
      * Method called by the internal game to enable this mod.
@@ -81,6 +89,8 @@ abstract class DreathMod {
      * **A mod should under no circumstances call this!**
      */
     fun internalEnable() {
+        CallOriginCheck.require(setOf("common.mods.ModLoader"))
+
         _enabling = true
         enable()
         _enabling = false
@@ -93,6 +103,8 @@ abstract class DreathMod {
      * **A mod should under no circumstances call this!**
      */
     fun internalDisable() {
+        CallOriginCheck.require(setOf("common.mods.ModLoader"))
+
         _disabling = true
         disable()
         _disabling = false
