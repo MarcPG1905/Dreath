@@ -40,5 +40,8 @@ class RegistrarType<T> private constructor(val name: String) {
 
         /** Registrar for custom events extending [Event]. */
         val EVENTS = RegistrarType<Event>("events")
+
+        /** Registrar for custom channels to be used in the protocol. */
+        val PROTOCOL_CHANNELS = RegistrarType<Channel>("protocol.channels")
     }
 }
