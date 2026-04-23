@@ -62,10 +62,11 @@ open class JsonConfigProvider(
         else -> null
     }
 
-    // TODO: Implement these:
-    override fun getAllRaw(): Map<String, Any?> = mapOf()
-    override fun getRaw(path: String): Any? = null
-    override fun setRaw(path: String, value: Any?) {}
+    @Suppress("UNCHECKED_CAST")
+    override fun getAllRaw(): Map<String, Any?> = configuration?.toAny() as? Map<String, Any?> ?: mapOf()
+
+    override fun getRaw(path: String): Any? = get(path)?.toAny()
+    override fun setRaw(path: String, value: Any?) { set(path, value) }
 
     open operator fun get(path: String) : JsonElement? {
         var current: JsonElement? = configuration

@@ -163,7 +163,7 @@ data class Color(
                 is JsonObject -> {
                     val result = fromRGBA(data["rgba"]?.jsonPrimitive?.intOrNull ?: 0x000000FF)
                     result.background = data["background"]?.jsonPrimitive?.booleanOrNull ?: false
-                    return result
+                    result
                 }
                 else -> BLACK
             }

@@ -77,8 +77,8 @@ class Console {
     }
 
     fun clear() {
-        terminal?.puts(InfoCmp.Capability.clear_screen);
-        terminal?.flush();
+        terminal?.puts(InfoCmp.Capability.clear_screen)
+        terminal?.flush()
     }
 
     fun signalStartupDone() = consoleThread.start()

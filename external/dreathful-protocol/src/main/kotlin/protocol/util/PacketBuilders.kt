@@ -35,7 +35,7 @@ fun createPacket(
         encrypted = encrypt ?: channel.encrypted,
         variant = variant,
         sourceSessionId = SessionManager.localSession?.id ?: 0u,
-        sequenceId = receiver.sendSequence.getAndIncrement(), // TODO: Maybe have to invert this (incrementAndGet()).
+        sequenceId = receiver.sendSequence.incrementAndGet(),
 
         // TODO: These two need to be looked at again, as they aren't tracked yet.
         acknowledgement = receiver.receiveSequence.get(),

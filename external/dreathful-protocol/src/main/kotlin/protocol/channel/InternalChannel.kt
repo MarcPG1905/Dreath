@@ -12,8 +12,6 @@ import java.net.SocketAddress
 
 internal object InternalChannel : Channel("internal", reliable = true, ordered = true, encrypted = true) {
     override fun handle(source: Session, packet: Packet) {
-        SocketManager.current.log.fine("Received packet from $source, containing: $packet")
-
         when (packet.header.type) {
             TypeId.CONNECT -> {
                 SessionManager.localSession = LocalSession(packet.data!!.toUInt())
@@ -37,8 +35,6 @@ internal object InternalChannel : Channel("internal", reliable = true, ordered =
     }
 
     override fun handleSessionless(sourceAddress: SocketAddress, packet: Packet) {
-        SocketManager.current.log.fine("Received sessionless packet from $sourceAddress, containing: $packet")
-
         // type = CONNECT & variant = 0
         if (packet.header.type == TypeId.CONNECT && !packet.header.variant) {
             val clientSession = SessionManager.getOrAddNormal(sourceAddress)

@@ -3,6 +3,7 @@ package com.marcpg.dreath.util.registry
 import com.marcpg.dreath.command.CommandLike
 import com.marcpg.dreath.event.Event
 import com.marcpg.dreath.world.feature.Feature
+import protocol.channel.Channel
 
 /**
  * Any type of registrar, used to register things during startup or at runtime.

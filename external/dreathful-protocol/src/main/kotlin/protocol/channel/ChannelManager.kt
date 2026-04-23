@@ -7,7 +7,7 @@ interface ChannelManager {
         lateinit var INSTANCE: ChannelManager
 
         fun initialize(instance: ChannelManager) {
-            CallOriginCheck.require(setOf("common.Game")) // TODO: Actually initialize it here.
+            CallOriginCheck.require(setOf("common.Game"))
             require(!::INSTANCE.isInitialized) { "ChannelManager has already been initialized" }
 
             INSTANCE = instance
