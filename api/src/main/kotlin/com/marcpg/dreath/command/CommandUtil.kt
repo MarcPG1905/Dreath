@@ -9,7 +9,7 @@ package com.marcpg.dreath.command
  */
 fun interface CommandLike {
     /** The method for getting the actual command. */
-    operator fun invoke(): Command
+    operator fun invoke(): AbstractCommand
 }
 
 /**
@@ -31,5 +31,5 @@ interface CommandClass : CommandLike {
      * Please do not override this method, and use [constructCommand] instead.
      * This just returns the output of [constructCommand].
      */
-    override operator fun invoke(): Command = constructCommand()
+    override operator fun invoke(): AbstractCommand = constructCommand()
 }

@@ -23,7 +23,7 @@ class CommandBuilder(
 ) : CommandLike {
     private val subcommands = mutableMapOf<String, Command>()
     private val parameters = mutableListOf<Parameter<*>>()
-    private var action: CommandContext.() -> Unit = {}
+    private var action: (CommandContext.() -> Unit)? = null
 
     /**
      * Appends a new sub-command to this command.
@@ -31,8 +31,8 @@ class CommandBuilder(
      * @see CommandBuilder
      */
     @DreathDsl
-    fun subcommand(name: String, block: CommandBuilder.() -> Unit) {
-        val builder = CommandBuilder(name)
+    fun subcommand(name: String, aliases: List<String> = listOf(), block: CommandBuilder.() -> Unit) {
+        val builder = CommandBuilder(name, aliases)
         builder.block()
         subcommands[name] = builder.build()
     }
@@ -85,12 +85,12 @@ class CommandBuilder(
     }
 
     /**
-     * Builds this command builder into a immutable [Command],
+     * Builds this command builder into an immutable [Command],
      * which can then be registered inside the [com.marcpg.dreath.util.registry.Registration].
      */
     fun build(): Command = Command(name, aliases, description, subcommands, parameters, action)
 
-    override operator fun invoke(): Command = build()
+    override operator fun invoke(): AbstractCommand = build()
 }
 
 /**
@@ -102,7 +102,7 @@ class CommandBuilder(
  * @since 0.1.0
  */
 @DreathDsl
-fun command(name: String, aliases: List<String> = mutableListOf(), description: String? = null, block: CommandBuilder.() -> Unit): CommandBuilder {
+fun command(name: String, aliases: List<String> = listOf(), description: String? = null, block: CommandBuilder.() -> Unit): CommandBuilder {
     return CommandBuilder(name, aliases, description).apply(block)
 }
 

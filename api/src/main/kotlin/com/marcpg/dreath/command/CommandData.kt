@@ -1,6 +1,9 @@
 package com.marcpg.dreath.command
 
-import com.marcpg.dreath.util.Location
+import com.marcpg.dreath.util.vector.Location
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.buildJsonObject
 import java.util.*
 
 /**
@@ -70,6 +73,19 @@ class Flag(
     override fun validate(value: Any?) {}
 }
 
+abstract class AbstractCommand : CommandLike {
+    abstract val name: String
+    abstract val aliases: List<String>
+    abstract val description: String?
+    abstract val subcommands: Map<String, AbstractCommand>
+    abstract val parameters: List<Parameter<*>>
+    abstract val action: (CommandContext.() -> Unit)?
+
+    open val allNames: List<String> by lazy { listOf(name) + aliases }
+
+    open fun matches(name: String): Boolean = name == this.name || name in aliases
+}
+
 /**
  * Represents a full command with subcommands, parameters, etc.
  * This can be registered inside the [com.marcpg.dreath.util.registry.Registration].
@@ -86,14 +102,14 @@ class Flag(
  */
 @ConsistentCopyVisibility
 data class Command internal constructor(
-    val name: String,
-    val aliases: List<String>,
-    val description: String? = null,
-    val subcommands: Map<String, Command> = emptyMap(),
-    val parameters: List<Parameter<*>> = emptyList(),
-    val action: CommandContext.() -> Unit
-) : CommandLike {
-    override operator fun invoke(): Command = this
+    override val name: String,
+    override val aliases: List<String>,
+    override val description: String? = null,
+    override val subcommands: Map<String, AbstractCommand> = emptyMap(),
+    override val parameters: List<Parameter<*>> = emptyList(),
+    override val action: (CommandContext.() -> Unit)?
+) : AbstractCommand() {
+    override operator fun invoke(): AbstractCommand = this
 }
 
 /**
@@ -119,6 +135,13 @@ class CommandContext(val executor: CommandExecutor) {
     fun <T> setArg(name: String, value: T) {
         values[name] = value
     }
+
+    override fun toString(): String {
+        return buildJsonObject {
+            put("executor", JsonPrimitive(executor.name()))
+            put("values", JsonObject(values.mapValues { JsonPrimitive(values.toString()) }))
+        }.toString()
+    }
 }
 
 /**
@@ -140,7 +163,16 @@ interface CommandExecutor {
     /** Gets the locale/language of this executor. */
     fun locale(): Locale
 
-    /** Shows a successful/neutral message to the executor. */
+    /** Shows a fine-level message to the executor. */
+    fun fine(raw: String)
+
+    /** Shows a configuration-related message to the executor. */
+    fun config(raw: String)
+
+    /** Shows a successful message to the executor. */
+    fun success(raw: String)
+
+    /** Shows a neutral message to the executor. */
     fun info(raw: String)
 
     /** Shows a warning message to the executor. */
