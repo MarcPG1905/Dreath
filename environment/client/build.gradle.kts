@@ -1,35 +1,37 @@
 plugins {
-    id("com.gradleup.shadow") version "8.3.6"
+    alias(libs.plugins.shadow)
 }
 
 base.archivesName.set("Dreath-Client")
 
 dependencies {
-    implementation(project(":core:render"))
-    implementation("io.github.vyfor:kpresence-jvm:0.6.5")
+    implementation(kotlin("reflect"))
+
+    projectApi(":core:render")
+    implementation(libs.kpresence)
 }
 
 tasks {
     build {
-        dependsOn(shadowJar, processResources)
+        dependsOn(shadowJar)
     }
     shadowJar {
         archiveClassifier.set("")
-        manifest {
-            attributes["Main-Class"] = "com.marcpg.common.MainKt"
-        }
+        manifest.attributes["Main-Class"] = "common.MainKt"
+        manifest.attributes["Enable-Native-Access"] = "ALL-UNNAMED"
     }
 }
 
 tasks.register<JavaExec>("runWithDebug") {
-    dependsOn(tasks.build)
+    dependsOn("build")
 
     group = "application"
-    description = "Runs the JAR file with or without debug support based on the flag."
+    description = "Runs the built JAR file with or without debug support based on the flag."
     workingDir = file("run")
     workingDir.mkdirs()
+    args = listOf("--debug")
 
-    val jarFile = file("build/libs/Dreath-Client-$version.jar")
+    val jarFile = file("build/libs/${base.archivesName.get()}-$version.jar")
 
     if (jarFile.exists()) {
         classpath = files(jarFile)
@@ -37,10 +39,13 @@ tasks.register<JavaExec>("runWithDebug") {
         throw GradleException("JAR file not found: ${jarFile.absolutePath}")
     }
 
-    if (project.hasProperty("debug") && project.property("debug") == "true") {
-        jvmArgs = listOf(
+    jvmArgs = if (project.hasProperty("debug") && project.property("debug") == "true") {
+        listOf(
+            "--enable-native-access=ALL-UNNAMED",
             "-Xdebug",
             "-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005"
         )
+    } else {
+        listOf("--enable-native-access=ALL-UNNAMED")
     }
 }

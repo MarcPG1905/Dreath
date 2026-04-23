@@ -1,37 +1,49 @@
 plugins {
-    kotlin("jvm") version "2.2.0"
-    kotlin("multiplatform") version "2.2.0" apply false
-    kotlin("plugin.serialization") version "2.2.0"
+    alias(libs.plugins.kotlin.jvm)
+    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.shadow)
 }
 
-group = "com.marcpg"
+group = "com.marcpg.dreath"
 version = "0.1.0"
 description = "Ultra-realistic survival game by MarcPG."
 
 base.archivesName.set("Dreath")
 
-allprojects {
-    repositories {
-        mavenLocal()
-        mavenCentral()
+fun copiedTasks() = mapOf(
+    ":external:mod-example" to "jar",
+    ":environment:client" to "shadowJar",
+    ":environment:server" to "shadowJar",
+)
 
-        maven("https://jitpack.io")
-        maven("https://marcpg.com/repo/")
-        maven("https://oss.sonatype.org/content/repositories/snapshots/")
-        maven("https://central.sonatype.com/repository/maven-snapshots")
+tasks {
+    build {
+        dependsOn(shadowJar, "copyJars")
+    }
+
+    register<Copy>("copyJars") {
+        copiedTasks().forEach { (copyProject, copyTask) ->
+            dependsOn("$copyProject:jar")
+            from(
+                project(copyProject)
+                    .tasks.named<Jar>(copyTask)
+                    .flatMap { it.archiveFile }
+            )
+        }
+
+        val outputDir = layout.buildDirectory.dir("platforms")
+        into(outputDir)
+        duplicatesStrategy = DuplicatesStrategy.INCLUDE
     }
 }
 
-subprojects {
-    if (project.path == ":external:launcher") return@subprojects
-
-    version = rootProject.version
-
+allprojects {
     apply(plugin = "org.jetbrains.kotlin.jvm")
     apply(plugin = "org.jetbrains.kotlin.plugin.serialization")
 
     kotlin {
-        jvmToolchain(21)
+        jvmToolchain(24)
+
         compilerOptions {
             freeCompilerArgs.add("-opt-in=kotlin.ExperimentalStdlibApi")
             freeCompilerArgs.add("-opt-in=kotlin.ExperimentalUnsignedTypes")
@@ -40,36 +52,16 @@ subprojects {
         }
     }
 
-    dependencies {
-        implementation(kotlin("reflect"))
-        implementation("org.jetbrains.kotlinx:kotlinx-serialization-json-jvm:1.8.1")
-        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.10.2")
-        implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.6.2")
+    repositories {
+        mavenLocal()
+        mavenCentral()
 
-        implementation("com.marcpg:ktlibpg-base:2.0.0")
-
-        if (!project.path.startsWith(":external") || project.path == ":external:mod-example") {
-            if (project.path != ":api")
-                implementation(project(":api"))
-
-            implementation(project(":external:cotton"))
-
-            if (project.path.startsWith(":core") || project.path.startsWith(":environment")) {
-                implementation("com.github.ajalt.clikt:clikt:5.0.3")
-            }
-        }
-
-        if (project.path.startsWith(":environment")) {
-            implementation(project(":core:common"))
-        }
+        maven("https://jitpack.io")
+        maven("https://oss.sonatype.org/content/repositories/snapshots/")
+        maven("https://central.sonatype.com/repository/maven-snapshots")
     }
+}
 
-    plugins.withId("java") {
-        val copyToRoot = tasks.register<Copy>("copyToRoot") {
-            val jar = tasks.named<Jar>("jar")
-            dependsOn()
-
-            // TODO: Finish!
-        }
-    }
+subprojects {
+    version = rootProject.version
 }

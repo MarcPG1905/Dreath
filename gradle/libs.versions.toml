@@ -1,0 +1,45 @@
+[versions]
+
+# ===== Gradle Plugins =====
+kotlin = "2.3.0"
+dokka = "2.1.0"
+shadow = "9.3.0"
+
+# ===== Dependencies =====
+kotlin-serialization-json = "1.10.0"
+kotlin-coroutines = "1.10.2"
+kotlin-datetime = "0.7.1"
+
+ktlibpg = "2.1.0"
+jline = "3.30.0"
+clikt = "5.1.0"
+kpresence = "0.6.6"
+
+lwjgl = "3.3.6"
+joml = "1.10.8"
+joml-primitives = "1.10.0"
+
+
+[plugins]
+
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+kotlin-dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
+shadow = { id = "com.gradleup.shadow", version.ref = "shadow" }
+
+
+[libraries]
+
+kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
+kotlin-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json-jvm", version.ref = "kotlin-serialization-json" }
+kotlin-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm", version.ref = "kotlin-coroutines" }
+kotlin-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime-jvm", version.ref = "kotlin-datetime" }
+
+ktlibpg-base = { module = "com.marcpg.libpg:ktlibpg-base", version.ref = "ktlibpg" }
+jline = { module = "org.jline:jline", version.ref = "jline" }
+clikt = { module = "com.github.ajalt.clikt:clikt", version.ref = "clikt" }
+kpresence = { module = "io.github.vyfor:kpresence", version.ref = "kpresence" }
+
+lwjgl = { module = "org.lwjgl:lwjgl-bom", version.ref = "lwjgl" }
+joml = { module = "org.joml:joml", version.ref = "joml" }
+joml-primitives = { module = "org.joml:joml-primitives", version.ref = "joml-primitives" }

@@ -1,6 +1,16 @@
-base.archivesName.set("Dreath-Mod-Example")
+plugins {
+    kotlin("jvm")
+
+    id("com.marcpg.dreath-mod")
+}
+
 version = "1.0.0"
 
-dependencies {
-    compileOnly(project(":api"))
+kotlin {
+    jvmToolchain(24)
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
 }
