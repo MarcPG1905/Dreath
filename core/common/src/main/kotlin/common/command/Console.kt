@@ -26,7 +26,7 @@ class Console {
 
     init {
         isRunning = true
-        consoleThread = thread(name = "Console Thread", isDaemon = true, start = false) {
+        consoleThread = thread(name = "Console Thread", isDaemon = true) {
             runConsole()
         }
     }
@@ -42,7 +42,7 @@ class Console {
             .terminal(terminal)
 
             .history(DefaultHistory())
-            .variable(LineReader.HISTORY_FILE, Game.DIR.resolve(".histfile"))
+            .variable(LineReader.HISTORY_FILE, Game.dir.resolve(".histfile"))
             .variable(LineReader.HISTORY_SIZE, 100)
 
             .completer(ConsoleCompleter())
@@ -81,8 +81,6 @@ class Console {
         terminal?.flush()
     }
 
-    fun signalStartupDone() = consoleThread.start()
-
     fun stop() {
         isRunning = false
         consoleThread.interrupt()
@@ -93,12 +91,12 @@ class Console {
         override fun name(): String = "Console"
         override fun locale(): Locale = Locale.getDefault()
 
-        override fun fine(raw: String) = raw.split("\n").forEach { Game.LOG.fine(it) }
-        override fun config(raw: String) = raw.split("\n").forEach { Game.LOG.config(it) }
-        override fun success(raw: String) = raw.split("\n").forEach { Game.LOG.success(it) }
+        override fun fine(raw: String) = raw.split("\n").forEach { Game.log.fine(it) }
+        override fun config(raw: String) = raw.split("\n").forEach { Game.log.config(it) }
+        override fun success(raw: String) = raw.split("\n").forEach { Game.log.success(it) }
 
-        override fun info(raw: String) = raw.split("\n").forEach { Game.LOG.info(it) }
-        override fun warn(raw: String) = raw.split("\n").forEach { Game.LOG.warn(it) }
-        override fun error(raw: String) = raw.split("\n").forEach { Game.LOG.error(it) }
+        override fun info(raw: String) = raw.split("\n").forEach { Game.log.info(it) }
+        override fun warn(raw: String) = raw.split("\n").forEach { Game.log.warn(it) }
+        override fun error(raw: String) = raw.split("\n").forEach { Game.log.error(it) }
     }
 }

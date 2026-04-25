@@ -3,6 +3,7 @@ package common
 import com.marcpg.dreath.Dreath
 import com.marcpg.dreath.log.DreathLogger
 import com.marcpg.dreath.log.DreathLoggerFactory
+import com.marcpg.dreath.log.LoggerOwner
 import com.marcpg.dreath.log.dreathLogger
 import com.marcpg.dreath.util.registry.RegistrarType
 import com.marcpg.dreath.util.registry.Registration
@@ -24,14 +25,14 @@ import java.nio.file.Files
 import java.nio.file.Path
 import kotlin.time.TimeSource
 
-object Game {
+object Game : LoggerOwner {
     val MAIN_THREAD: Thread = Thread.currentThread()
     val ENVIRONMENT: Environment = Environment.current()
     lateinit var CLI_ARGS: CommandArguments
 
-    lateinit var DIR: Path
-    lateinit var LOG: DreathLogger
-    internal var CONSOLE: Console? = null
+    override lateinit var log: DreathLogger
+    lateinit var dir: Path
+    internal var console: Console? = null
 
     var running: Boolean = true
         internal set
@@ -44,7 +45,7 @@ object Game {
         val start = TimeSource.Monotonic.markNow()
 
         CLI_ARGS = args
-        DIR = Files.createDirectories(CLI_ARGS.gameDir)
+        dir = Files.createDirectories(CLI_ARGS.gameDir)
 
         // Prevents errors which aren't from the DreathLogger from being printed.
         System.setErr(FilteredOutputStream(System.err))
@@ -56,44 +57,61 @@ object Game {
         DreathLoggerFactory.initialize(CLI_ARGS.gameDir.resolve("logs"))
         DreathLogger.logLevel = CommonConfig.loggerLevel
         DreathLogger.ansiFormatting = CommonConfig.loggerAnsiFormatting
-        LOG = dreathLogger("Common")
+        log = dreathLogger("Common")
 
-        LOG.config("Debug: ${if (Dreath.isDebug) "Enabled" else "Disabled"}")
-        LOG.config("JVM: ${SystemInfo.jvm()}")
-        LOG.config("System: ${SystemInfo.os()}")
-        LOG.config("User: ${SystemInfo.user()}")
-        LOG.config("Environment: ${ENVIRONMENT.name.toTitleCase()}")
+        log.config("Debug: ${if (Dreath.isDebug) "Enabled" else "Disabled"}")
+        log.config("JVM: ${SystemInfo.jvm()}")
+        log.config("System: ${SystemInfo.os()}")
+        log.config("User: ${SystemInfo.user()}")
+        log.config("Environment: ${ENVIRONMENT.name.toTitleCase()}")
 
+        console = Console()
 
-        CONSOLE = Console()
+        onShutdownProcess { end() }
+
+        log.fine("Starting Dreath main logic...")
 
         SocketManager.open(ENVIRONMENT == Environment.SERVER)
         ChannelManager.initialize(ChannelRegistrar)
 
-        onShutdownProcess { end() }
-
-        LOG.fine("Starting Dreath main logic...")
-
         val loadMods = !CLI_ARGS.noMods && CommonConfig.loadMods
-
         if (loadMods) {
-            LOG.fine("Loading mods...")
-            val loaded = ModLoader.init()
-            if (loaded.first > 0) {
-                LOG.success("Found and initialized ${loaded.first} mods ${start.elapsedMs()} into startup.")
-            } else {
-                LOG.info("No mods found.")
-            }
-            LOG.info("Total mods loaded: ${loaded.second}")
+            log.fine("Loading mods...")
+            loadMods()
         } else {
-            LOG.config("Skipping mod loading due to flag or configuration.")
+            log.config("Skipping mod loading due to flag or configuration.")
         }
 
         ENVIRONMENT.instance()?.run(start)
 
-        LOG.info("Registering base registration values...")
+        initRegistry()
 
-        LOG.fine("Registering base protocol channels...")
+        if (loadMods) {
+            log.fine("Enabling mods...")
+            ModLoader.enable()
+            log.success("All mods were successfully enabled.")
+        }
+
+        log.success(Ansi.bold("Done! Took ${start.elapsedMs()}."))
+
+        // Creates a virtual thread which is constantly halted to keep the process alive.
+        keepAliveProcess()
+    }
+
+    private fun loadMods() {
+        val loaded = ModLoader.init()
+        if (loaded.first > 0) {
+            log.success("Found and initialized ${loaded.first} mods.")
+        } else {
+            log.info("No mods found.")
+        }
+        log.info("Total mods loaded: ${loaded.second}")
+    }
+
+    private fun initRegistry() {
+        log.fine("Registering base registration values...")
+
+        log.fine("Registering base protocol channels...")
         Registration.register(RegistrarType.PROTOCOL_CHANNELS, listOf(
             HeartbeatChannel,
             SocialChannel,
@@ -102,7 +120,7 @@ object Game {
             GameplayChannel,
         ))
 
-        LOG.fine("Registering base commands...")
+        log.fine("Registering base commands...")
         Registration.register(RegistrarType.COMMANDS, listOf(
             common.command.Dreath(),
             common.command.Help(),
@@ -110,36 +128,25 @@ object Game {
             common.command.Mods(),
             common.command.Stop()
         ))
-        LOG.success("Registered base registration values ${start.elapsedMs()} into startup.")
-
-        if (loadMods) {
-            LOG.fine("Enabling mods...")
-            ModLoader.enable()
-            LOG.success("All mods were successfully enabled.")
-        } // No else, because we don't need to send the same message twice.
-
-        LOG.success(Ansi.bold("Done! Took ${start.elapsedMs()}."))
-
-        CONSOLE?.signalStartupDone()
-        keepAliveProcess()
+        log.success("Registered base registration values.")
     }
 
     /**
      * Called when the game ends. Shuts down the game.
      */
     private fun end() {
-        LOG.info("Shutting down...")
+        log.info("Shutting down...")
 
-        LOG.info("Stopping console, commands will no longer be received...")
-        CONSOLE?.stop()
+        log.info("Stopping console, commands will no longer be received...")
+        console?.stop()
 
-        LOG.info("Unloading ${ModLoader.loaded()} mods...")
+        log.info("Unloading ${ModLoader.loaded()} mods...")
         ModLoader.unload()
 
         SocketManager.close()
 
         ENVIRONMENT.instance()?.end()
 
-        LOG.success("Done, bye!")
+        log.success("Done, bye!")
     }
 }

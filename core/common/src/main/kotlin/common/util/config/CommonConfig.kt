@@ -4,7 +4,7 @@ import com.marcpg.dreath.log.LogLevel
 import com.marcpg.libpg.config.ConfigVersion
 import common.Game
 
-object CommonConfig : GameConfig(Game.DIR, "common") {
+object CommonConfig : GameConfig(Game.dir, "common") {
     override val versionHistory: List<ConfigVersion> = listOf(
         ConfigVersion(id = 1)
     )

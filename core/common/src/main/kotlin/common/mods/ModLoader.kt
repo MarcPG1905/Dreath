@@ -39,7 +39,7 @@ object ModLoader {
                 newlyLoaded++
             }
         }.onFailure {
-            Game.LOG.error(it.message, it)
+            Game.log.error(it.message, it)
         }
         return Pair(newlyLoaded, LOADED_MODS.size)
     }
@@ -86,7 +86,7 @@ object ModLoader {
     fun loaded(): Int = LOADED_MODS.size
 
     fun loadAllJars(): Set<ModInfo> {
-        val modsDir = Game.DIR.resolve("mods")
+        val modsDir = Game.dir.resolve("mods")
         modsDir.createDirectories()
 
         val mods = mutableSetOf<ModInfo>()
@@ -94,8 +94,8 @@ object ModLoader {
             runCatching {
                 mods += loadJar(modFile) ?: return@runCatching
             }.onFailure {
-                Game.LOG.error("Could not load mod info for ${modFile.name} due to error: ${it.message}")
-                it.printStackTraceFine(Game.LOG)
+                Game.log.error("Could not load mod info for ${modFile.name} due to error: ${it.message}")
+                it.printStackTraceFine(Game.log)
             }
         }
         return mods
@@ -107,7 +107,7 @@ object ModLoader {
                 val dreathModJsonFile = jar.manifest?.mainAttributes?.getValue("Dreath-Mod-Json")
                 return extractInfo(modFile.toFile(), jar, jar.getJarEntry(dreathModJsonFile))
             }.onFailure {
-                Game.LOG.error(it.message ?: "Error loading mod ${modFile.name}.", it)
+                Game.log.error(it.message ?: "Error loading mod ${modFile.name}.", it)
             }
         }
         return null
@@ -115,7 +115,7 @@ object ModLoader {
 
     private fun loadMod(info: ModInfo) {
         if (info.id in LOADED_MODS) {
-            Game.LOG.error("Duplicate ID ${info.id} - already loaded")
+            Game.log.error("Duplicate ID ${info.id} - already loaded")
             return
         }
 
@@ -130,10 +130,10 @@ object ModLoader {
 
                 logger.fine("Loaded mod ${info.name}.")
             }.onFailure {
-                Game.LOG.error("Could not load mod ${info.name} due to error in the mod's code.", it)
+                Game.log.error("Could not load mod ${info.name} due to error in the mod's code.", it)
             }
         } else {
-            Game.LOG.error("Could not load mod ${info.name}. Main class is either missing or a class instead of an object.")
+            Game.log.error("Could not load mod ${info.name}. Main class is either missing or a class instead of an object.")
         }
     }
 
@@ -170,7 +170,7 @@ object ModLoader {
                     )
                 )
             }.onFailure {
-                it.printStackTrace(Game.LOG)
+                it.printStackTrace(Game.log)
                 throw IllegalArgumentException("Could not parse dreath-mod.json for mod ${file.name}.")
             }
         } }

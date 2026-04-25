@@ -42,10 +42,10 @@ class Help : CommandClass {
 class Clear : CommandClass {
     override fun constructCommand(): Command = command(name = "clear", description = "Clears the console.") {
         action {
-            if (Game.CONSOLE == null) {
+            if (Game.console == null) {
                 executor.error("There is no console running right now.")
             } else {
-                Game.CONSOLE!!.clear()
+                Game.console!!.clear()
             }
         }
     }.build()
