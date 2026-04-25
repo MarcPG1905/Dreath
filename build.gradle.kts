@@ -2,6 +2,8 @@ plugins {
     alias(libs.plugins.kotlin.jvm)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.shadow)
+
+    alias(libs.plugins.versionCatalogueUpdate)
 }
 
 group = "com.marcpg.dreath"
@@ -9,6 +11,12 @@ version = "0.1.0"
 description = "Ultra-realistic survival game by MarcPG."
 
 base.archivesName.set("Dreath")
+
+versionCatalogUpdate {
+    pin { // Don't auto-update these.
+        versions.add("kotlin")
+    }
+}
 
 fun copiedTasks() = mapOf(
     ":external:mod-example" to "jar",
@@ -56,9 +64,9 @@ allprojects {
         mavenLocal()
         mavenCentral()
 
+        maven("https://central.sonatype.com/repository/maven-snapshots")
         maven("https://jitpack.io")
         maven("https://oss.sonatype.org/content/repositories/snapshots/")
-        maven("https://central.sonatype.com/repository/maven-snapshots")
     }
 }
 
