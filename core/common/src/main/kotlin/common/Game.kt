@@ -11,8 +11,6 @@ import com.marcpg.libpg.util.toTitleCase
 import common.channels.*
 import common.command.Console
 import common.mods.ModLoader
-import common.modules.Module
-import common.modules.ModuleTesting
 import common.registrars.ChannelRegistrar
 import common.util.SystemInfo
 import common.util.config.CommonConfig
@@ -66,10 +64,6 @@ object Game {
         LOG.config("User: ${SystemInfo.user()}")
         LOG.config("Environment: ${ENVIRONMENT.name.toTitleCase()}")
 
-        if (CLI_ARGS.module != Module.NONE) {
-            ModuleTesting.run(start)
-            return
-        }
 
         CONSOLE = Console()
 
