@@ -49,6 +49,13 @@ sealed class Session(
     val created = System.currentTimeMillis()
 
     /**
+     * A calculated/tested MTU for this connection.
+     * This is often either around 500, or 1500, depending on the connection and IPv4/IPv6.
+     */
+    // TODO: Calculate/test for this using RFC 8899.
+    var mtu: Int? = null
+
+    /**
      * When this session has last sent a packet to this client.
      * Used for detecting timeouts.
      */

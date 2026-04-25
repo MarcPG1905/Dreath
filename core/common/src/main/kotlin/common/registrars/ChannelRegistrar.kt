@@ -1,10 +1,11 @@
-package common
+package common.registrars
 
 import com.marcpg.dreath.util.firstNotInOrNull
 import com.marcpg.dreath.util.registry.Registrar
 import com.marcpg.dreath.util.registry.RegistrarType
 import protocol.channel.Channel
 import protocol.channel.ChannelManager
+import kotlin.collections.iterator
 import kotlin.math.pow
 
 object ChannelRegistrar : Registrar<Channel>, ChannelManager {

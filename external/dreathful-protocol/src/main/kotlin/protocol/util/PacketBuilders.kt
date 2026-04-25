@@ -15,24 +15,22 @@ fun createPacket(
     type: TypeId,
     channel: Channel,
 
-    compress: Boolean? = null,
-    encrypt: Boolean? = null,
+    doNotCompress: Boolean = false,
+    doNotEncrypt: Boolean = false,
     variant: Boolean = false,
 
     tick: UInt = 0u, // TODO: Set actual tracked ping.
 
     data: ByteArray? = emptyByteArray(),
 ): Packet {
-    // TODO: Compress data if needed.
-    // TODO: Encrypt data if needed.
-
+    val data = data?.let { channel.processData(it, doNotCompress, doNotEncrypt) }
     return Packet(PacketHeader(
         type = type,
         channel = channel,
         fragment = false,
         retransmission = false,
-        compressed = compress ?: channel.compression,
-        encrypted = encrypt ?: channel.encrypted,
+        compressed = data?.second ?: false,
+        encrypted = data?.third ?: false,
         variant = variant,
         sourceSessionId = SessionManager.localSession?.id ?: 0u,
         sequenceId = receiver.sendSequence.incrementAndGet(),
@@ -42,8 +40,8 @@ fun createPacket(
         acknowledgementBitfield = 0u,
 
         tick = tick,
-        length = data?.size?.toUShort() ?: 0u
-    ), data)
+        length = data?.first?.size?.toUShort() ?: 0u
+    ), data?.first)
 }
 
 fun createPing(

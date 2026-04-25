@@ -16,7 +16,7 @@ internal class JavaNioSocket(server: Boolean, port: Int) : Socket(server, port) 
         configureBlocking(true)
         setOption(StandardSocketOptions.SO_RCVBUF, 4 * 1024 * 1024)
         setOption(StandardSocketOptions.SO_SNDBUF, 4 * 1024 * 1024)
-        bind(InetSocketAddress(if (server) port else port / 2)) // TODO: Use other port for the client instead of just half the server port.
+        bind(InetSocketAddress(if (server) port else 0)) // 0 lets the OS assign a random port.
     }
 
     var channelClosedCounter = 0

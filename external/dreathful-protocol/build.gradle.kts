@@ -15,6 +15,7 @@ java {
 
 dependencies {
     api(libs.ktlibpg.base)
+    api(libs.lz4)
     projectCompileOnly(":dreath-utils")
 }
 

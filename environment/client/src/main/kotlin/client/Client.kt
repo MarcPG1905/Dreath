@@ -4,14 +4,13 @@ import client.command.Internal
 import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.types.path
-import com.marcpg.dreath.translations.TranslationRegistrar
 import com.marcpg.dreath.util.registry.RegistrarType
 import com.marcpg.dreath.util.registry.Registration
-import common.ChannelRegistrar
 import common.CommandArguments
 import common.EnvironmentClass
 import common.Game
 import common.command.CommandRegistrar
+import common.registrars.ChannelRegistrar
 import common.util.SystemInfo
 import common.util.elapsedMs
 import java.io.File
@@ -30,7 +29,6 @@ object Client : EnvironmentClass<ClientConfig>() {
         Registration.initialize(mapOf(
             RegistrarType.COMMANDS to CommandRegistrar,
             RegistrarType.PROTOCOL_CHANNELS to ChannelRegistrar,
-            RegistrarType.LOCALIZATION_PROVIDERS to TranslationRegistrar,
         ))
 
         Registration.register(RegistrarType.COMMANDS, listOf(

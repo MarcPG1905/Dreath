@@ -5,11 +5,11 @@ import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.types.path
 import com.marcpg.dreath.util.registry.RegistrarType
 import com.marcpg.dreath.util.registry.Registration
-import common.ChannelRegistrar
 import common.CommandArguments
 import common.EnvironmentClass
 import common.Game
 import common.command.CommandRegistrar
+import common.registrars.ChannelRegistrar
 import common.util.SystemInfo
 import common.util.elapsedMs
 import engine.EventRegistrar
@@ -31,17 +31,15 @@ object Server : EnvironmentClass<ServerConfig>() {
 
         Registration.initialize(mapOf(
             RegistrarType.COMMANDS to CommandRegistrar,
-            RegistrarType.PROTOCOL_CHANNELS to ChannelRegistrar,
             RegistrarType.FEATURES to FeatureRegistrar,
             RegistrarType.EVENTS to EventRegistrar,
+            RegistrarType.PROTOCOL_CHANNELS to ChannelRegistrar,
         ))
 
         Registration.register(RegistrarType.COMMANDS, listOf(
             Internal(),
             StartRender(),
         ))
-
-//        DataSocket; GameplaySocket; SocialSocket
 
         log.success("Started server logic ${start.elapsedMs()} into startup.")
     }

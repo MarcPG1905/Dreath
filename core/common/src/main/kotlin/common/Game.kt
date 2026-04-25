@@ -13,6 +13,7 @@ import common.command.Console
 import common.mods.ModLoader
 import common.modules.Module
 import common.modules.ModuleTesting
+import common.registrars.ChannelRegistrar
 import common.util.SystemInfo
 import common.util.config.CommonConfig
 import common.util.elapsedMs
