@@ -42,8 +42,5 @@ class DreathModPlugin : Plugin<Project> {
 
         dependencies.add("compileOnly", libs.findLibrary("kotlin.stdlib").get())
         dependencies.add("compileOnly", project(":api"))
-
-        // TODO: Update to 2.0.2:
-        // dependencies.add("compileOnly", "com.marcpg:ktlibpg-storage-base:2.0.0")
     }
 }

@@ -1,7 +1,7 @@
 package common.mods
 
+import com.marcpg.dreath.Dreath
 import com.marcpg.dreath.ModInfo
-import com.marcpg.dreath.util.Constants
 
 object LoadOrderResolution {
     fun resolve(mods: Set<ModInfo>): List<ModInfo> {
@@ -22,7 +22,7 @@ object LoadOrderResolution {
     fun indexByIds(mods: Set<ModInfo>) = mods.groupBy { it.id }.mapValues { entry -> entry.value.sortedByDescending { it.version } }
 
     fun checkDependencies(mods: Set<ModInfo>, modsById: Map<String, List<ModInfo>>): List<ModInfo> {
-        val currentDreathVersion = Constants.VERSION.toSimpleVersion()
+        val currentDreathVersion = Dreath.VERSION.toSimpleVersion()
         return mods.filter { mod -> currentDreathVersion >= mod.dependencies.dreath && mod.dependencies.external.all { if (it.required) modsById.getMatching(it) != null else true } }
     }
 

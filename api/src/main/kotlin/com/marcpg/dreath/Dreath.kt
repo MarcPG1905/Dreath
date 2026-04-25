@@ -1,6 +1,8 @@
 package com.marcpg.dreath
 
 import com.marcpg.dreath.util.CallOriginCheck
+import com.marcpg.dreath.util.DreathVersion
+import com.marcpg.dreath.util.ReleaseType
 
 /**
  * Utility object for accessing some data about the game's state.
@@ -8,6 +10,14 @@ import com.marcpg.dreath.util.CallOriginCheck
  * @since 0.1.0
  */
 object Dreath {
+    /** The game's current version. */
+    val VERSION = DreathVersion(
+        verId = 0u,
+        moduleName = "Dreath",
+        ver = Triple(0u, 1u, 0u),
+        verType = ReleaseType.ALPHA,
+    )
+
     private var running: () -> Boolean = { false }
     private var debug: () -> Boolean = { false }
 

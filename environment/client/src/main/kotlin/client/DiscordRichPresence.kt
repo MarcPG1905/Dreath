@@ -1,8 +1,8 @@
 package client
 
+import com.marcpg.dreath.Dreath
 import com.marcpg.dreath.log.DreathLogger
 import com.marcpg.dreath.log.dreathLogger
-import com.marcpg.dreath.util.Constants
 import io.github.vyfor.kpresence.RichClient
 import io.github.vyfor.kpresence.event.ReadyEvent
 import io.github.vyfor.kpresence.logger.ILogger
@@ -15,7 +15,7 @@ object DiscordRichPresence {
         client.on<ReadyEvent> {
             update {
                 type = ActivityType.GAME
-                details = Constants.VERSION.fullString()
+                details = Dreath.VERSION.fullString()
                 state = "Experimental Version" // TODO: Remove this!
             }
         }

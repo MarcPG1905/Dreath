@@ -3,12 +3,11 @@ package com.marcpg.dreath.log
 /**
  * Anything that uses the same logger as some other [LoggerOwner].
  *
- * @property log The logger for this object.
- *
  * @author MarcPG
  * @since 0.1.0
  */
 interface LoggerOwnerChild : LoggerOwner {
+    /** The parent logger owner with the logger to use. */
     val parent: LoggerOwner
 
     override val log: DreathLogger
@@ -34,8 +33,6 @@ interface LoggerOwnerChild : LoggerOwner {
  * // Output:
  * "[06-09 13:14:15 - DONE] Universe: yum"
  * ```
- *
- * @param parent The parent logger owner with the logger to use.
  *
  * @author MarcPG
  * @since 0.1.0

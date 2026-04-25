@@ -2,13 +2,11 @@ package com.marcpg.dreath.log
 
 /**
  * Anything that has its own logger.
- *
- * @property log The logger for this object.
- *
  * @author MarcPG
  * @since 0.1.0
  */
 interface LoggerOwner {
+    /** The logger for this object. */
     val log: DreathLogger
 }
 

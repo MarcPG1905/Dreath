@@ -1,21 +1,22 @@
 package common.command
 
+import com.marcpg.dreath.Dreath
 import com.marcpg.dreath.command.Command
 import com.marcpg.dreath.command.CommandClass
 import com.marcpg.dreath.command.command
-import com.marcpg.dreath.util.Constants
 import com.marcpg.libpg.util.truncate
 import common.Game
 import common.mods.ModLoader
 import common.util.SystemInfo
+import protocol.Protocol
 import kotlin.system.exitProcess
 
 class Dreath : CommandClass {
     override fun constructCommand(): Command = command(name = "dreath", description = "Gets information about the dreath game.") {
         action {
             executor.info("""
-                Dreath: ${Constants.VERSION}
-                Protocol: ${Constants.PROTOCOL_VERSION}
+                Dreath: ${Dreath.VERSION}
+                Protocol: ${Protocol.VERSION}
                 
                 Loaded Mods: ${ModLoader.loaded()}
                 
