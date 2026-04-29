@@ -33,14 +33,14 @@ enum class LogLevel(override val abb: String, override val ansi: String, overrid
     /** Debugging stuff for testing. */
     FINE("FINE", Ansi.GRAY.get(), 0),
 
-    /** Notification that something was successful. */
-    SUCCESS("DONE", Ansi.LIME.get(), 1),
-
     /** Usage of [System.out], which should not be done. */
-    SYSTEM_OUT("SOUT", Ansi.BROWN.get(), 5),
+    SYSTEM_OUT("SOUT", Ansi.BROWN.get(), 1),
 
     /** Normal logging. */
-    INFO("INFO", Ansi.WHITE.get(), 5),
+    INFO("INFO", Ansi.WHITE.get(), 3),
+
+    /** Notification that something was successful. */
+    SUCCESS("DONE", Ansi.LIME.get(), 5),
 
     /** Something that went wrong but won't cause lasting damage. */
     WARN("WARN", Ansi.YELLOW.get(), 10),

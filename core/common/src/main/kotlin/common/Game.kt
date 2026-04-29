@@ -59,7 +59,11 @@ object Game : LoggerOwner {
         DreathLogger.ansiFormatting = CommonConfig.loggerAnsiFormatting
         log = dreathLogger("Common")
 
-        log.config("Debug: ${if (Dreath.isDebug) "Enabled" else "Disabled"}")
+        if (Dreath.isDebug) {
+            log.warn("Debug: Enabled")
+        } else {
+            log.config("Debug: Disabled")
+        }
         log.config("JVM: ${SystemInfo.jvm()}")
         log.config("System: ${SystemInfo.os()}")
         log.config("User: ${SystemInfo.user()}")
@@ -69,7 +73,7 @@ object Game : LoggerOwner {
 
         onShutdownProcess { end() }
 
-        log.fine("Starting Dreath main logic...")
+        log.info("Starting Dreath main logic...")
 
         SocketManager.open(ENVIRONMENT == Environment.SERVER)
         ChannelManager.initialize(ChannelRegistrar)
@@ -79,7 +83,7 @@ object Game : LoggerOwner {
             log.fine("Loading mods...")
             loadMods()
         } else {
-            log.config("Skipping mod loading due to flag or configuration.")
+            log.info("Skipping mod loading due to flag or configuration.")
         }
 
         ENVIRONMENT.instance()?.run(start)
@@ -105,7 +109,7 @@ object Game : LoggerOwner {
         } else {
             log.info("No mods found.")
         }
-        log.info("Total mods loaded: ${loaded.second}")
+        log.fine("Total mods loaded: ${loaded.second}")
     }
 
     private fun initRegistry() {
