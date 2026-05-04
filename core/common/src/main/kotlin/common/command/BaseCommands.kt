@@ -80,7 +80,7 @@ class Mods : CommandClass {
             }
         }
         subcommand("reload") {
-            option("mod", 'm', { it }, { it in ModLoader.LOADED_MODS }, "Specific mod to reload, instead of all.")
+            option("mod", 'm', "Specific mod to reload, instead of all.", { it }, { it in ModLoader.LOADED_MODS })
 
             action {
                 if (hasArg("mod")) {

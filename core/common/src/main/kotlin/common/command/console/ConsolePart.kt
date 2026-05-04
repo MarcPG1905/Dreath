@@ -1,6 +1,7 @@
 package common.command.console
 
 import com.marcpg.dreath.command.AbstractCommand
+import com.marcpg.dreath.command.CommandExecutor
 import com.marcpg.dreath.command.Option
 import com.marcpg.dreath.util.registry.RegistrarType
 import com.marcpg.dreath.util.registry.Registration
@@ -44,10 +45,13 @@ interface ConsolePart {
         return CommandDissectionResult(currentCommand, options, flags)
     }
 
-    fun possibleChildren(command: AbstractCommand, options: Map<String, String>, flags: List<String>): Map<String, String?> {
+    fun possibleChildren(executor: CommandExecutor, command: AbstractCommand, options: Map<String, String>, flags: List<String>): Map<String, String?> {
         val values = mutableMapOf<String, String?>()
 
         for (subcommand in command.subcommands.values) {
+            if (subcommand.requirements.any { !it(executor) })
+                continue
+
             for (name in subcommand.allNames) {
                 values[name] = subcommand.description
             }

@@ -23,6 +23,7 @@ class CommandBuilder(
 ) : CommandLike {
     private val subcommands = mutableMapOf<String, Command>()
     private val parameters = mutableListOf<Parameter<*>>()
+    private val requirements = mutableListOf<Requirement>()
     private var action: (CommandContext.() -> Unit)? = null
 
     /**
@@ -31,8 +32,8 @@ class CommandBuilder(
      * @see CommandBuilder
      */
     @DreathDsl
-    fun subcommand(name: String, aliases: List<String> = listOf(), block: CommandBuilder.() -> Unit) {
-        val builder = CommandBuilder(name, aliases)
+    fun subcommand(name: String, aliases: List<String> = listOf(), description: String? = null, block: CommandBuilder.() -> Unit) {
+        val builder = CommandBuilder(name, aliases, description)
         builder.block()
         subcommands[name] = builder.build()
     }
@@ -59,9 +60,9 @@ class CommandBuilder(
     fun <T> option(
         name: String,
         short: Char? = null,
+        description: String? = null,
         converter: (String) -> T,
         validator: (Any?) -> Boolean = { true },
-        description: String? = null,
         required: Boolean = false
     ) {
         parameters += Option(name, short, converter, validator, description, required)
@@ -77,6 +78,15 @@ class CommandBuilder(
     }
 
     /**
+     * Adds a new requirement to this command.
+     * @see Requirement
+     */
+    @DreathDsl
+    fun require(id: String? = null, requirement: (CommandExecutor) -> Boolean) {
+        requirements += Requirement(id, requirement)
+    }
+
+    /**
      * Sets the action executed when this command is run.
      */
     @DreathDsl
@@ -88,7 +98,7 @@ class CommandBuilder(
      * Builds this command builder into an immutable [Command],
      * which can then be registered inside the [com.marcpg.dreath.util.registry.Registration].
      */
-    fun build(): Command = Command(name, aliases, description, subcommands, parameters, action)
+    fun build(): Command = Command(name, aliases, description, subcommands, parameters, requirements, action)
 
     override operator fun invoke(): AbstractCommand = build()
 }

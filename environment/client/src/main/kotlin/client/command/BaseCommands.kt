@@ -10,7 +10,7 @@ import java.net.InetSocketAddress
 
 class Internal : CommandClass {
     override fun constructCommand(): Command = command("internal", listOf("client"), "Runs internal client-related actions for debugging.") {
-        subcommand("server") {
+        subcommand(name = "server", description = "Server-specific features.") {
             action {
                 val server = SessionManager[0u]
                 if (server == null) {
@@ -19,9 +19,11 @@ class Internal : CommandClass {
                     executor.info("Connected to $server")
                 }
             }
-            subcommand("connect") {
-                option("address", 'a', { InetAddress.getByName(it) }, { it is InetAddress }, "Address to connect to.", required = true)
-                option("port", 'p', { it.toInt() }, { it is Int }, "Port to connect to.", required = true)
+            subcommand(name = "connect", description = "Connect to a server.") {
+                require { SessionManager[0u] == null }
+
+                option("address", 'a', "Address to connect to.", { InetAddress.getByName(it) }, { it is InetAddress }, required = true)
+                option("port", 'p', "Port to connect to.", { it.toInt() }, { it is Int }, required = true)
 
                 action {
                     val address = InetSocketAddress(getArg<InetAddress>("address"), getArg("port"))

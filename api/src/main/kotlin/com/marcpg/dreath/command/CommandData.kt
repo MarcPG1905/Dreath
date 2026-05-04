@@ -73,12 +73,29 @@ class Flag(
     override fun validate(value: Any?) {}
 }
 
+/**
+ * Represents a requirement, optionally with an ID for user feedback.
+ *
+ * If an ID is attached, a translation key `command.requirement.{id}` should exist,
+ * containing an error message which can be displayed if this requirement is not met.
+ *
+ * @param id An ID if this requirement is not matched.
+ * @param predicate The actual predicate to check for the requirement.
+ *
+ * @author MarcPG
+ * @since 0.1.0
+ */
+data class Requirement(val id: String? = null, val predicate: (CommandExecutor) -> Boolean) {
+    operator fun invoke(executor: CommandExecutor): Boolean = predicate(executor)
+}
+
 abstract class AbstractCommand : CommandLike {
     abstract val name: String
     abstract val aliases: List<String>
     abstract val description: String?
     abstract val subcommands: Map<String, AbstractCommand>
     abstract val parameters: List<Parameter<*>>
+    abstract val requirements: List<Requirement>
     abstract val action: (CommandContext.() -> Unit)?
 
     open val allNames: List<String> by lazy { listOf(name) + aliases }
@@ -107,6 +124,7 @@ data class Command internal constructor(
     override val description: String? = null,
     override val subcommands: Map<String, AbstractCommand> = emptyMap(),
     override val parameters: List<Parameter<*>> = emptyList(),
+    override val requirements: List<Requirement> = emptyList(),
     override val action: (CommandContext.() -> Unit)?
 ) : AbstractCommand() {
     override operator fun invoke(): AbstractCommand = this

@@ -11,10 +11,14 @@ object CommandParser {
         val command = CommandRegistrar.retrieve(args.first())
             ?: throw IllegalArgumentException("Unknown command: ${args.first()}")
 
+        if (command.requirements.any { !it(executor) })
+            throw IllegalArgumentException("No permission to execute $command")
+
         val context = CommandContext(executor)
         val action = parseCommand(command, args.drop(1).iterator(), context)
+            ?: throw IllegalArgumentException("Missing subcommand/parameter after '${args.last()}'")
 
-        action?.invoke(context) ?: throw IllegalArgumentException("Missing subcommand/parameter after '${args.last()}'")
+        action.invoke(context)
     }
 
     private fun parseCommand(command: AbstractCommand, args: Iterator<String>, context: CommandContext): (CommandContext.() -> Unit)? {
