@@ -3,6 +3,8 @@ package common.command
 import com.marcpg.dreath.command.AbstractCommand
 import com.marcpg.dreath.command.CommandContext
 import com.marcpg.dreath.command.CommandExecutor
+import common.Game
+import common.util.config.CommonConfig
 
 object CommandParser {
     fun parse(executor: CommandExecutor, args: List<String>) {
@@ -18,6 +20,8 @@ object CommandParser {
         val action = parseCommand(command, args.drop(1).iterator(), context)
             ?: throw IllegalArgumentException("Missing subcommand/parameter after '${args.last()}'")
 
+        if (CommonConfig.logCommands)
+            Game.log.info("$executor is executing /$args")
         action.invoke(context)
     }
 

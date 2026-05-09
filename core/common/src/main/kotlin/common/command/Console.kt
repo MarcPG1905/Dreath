@@ -59,7 +59,7 @@ class Console {
             try {
                 val line = lineReader.readLine("~# ")
                 if (!line.isNullOrBlank()) {
-                    val args = line.split("\\s|=".toRegex())
+                    val args = line.removePrefix("/").split("\\s|=".toRegex())
                     runCatching {
                         CommandParser.parse(ConsoleCommandExecutor, args)
                     }.onFailure { e ->

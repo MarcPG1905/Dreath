@@ -23,6 +23,7 @@ object CommandRegistrar : Registrar<CommandLike> {
         val actualCommand = instance()
         require(actualCommand is Command) { "Cannot register custom implementation of Command" }
         require(actualCommand.name !in namesToCommands) { "Command '${actualCommand.name}' is already registered" }
+        require(!actualCommand.name.startsWith('/')) { "Command names cannot start with forward slash (/)" }
 
         loaded += actualCommand
 
