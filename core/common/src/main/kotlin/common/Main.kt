@@ -2,8 +2,6 @@ package common
 
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.core.main
-import com.github.ajalt.clikt.parameters.arguments.argument
-import com.github.ajalt.clikt.parameters.arguments.multiple
 import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.flag
 import com.github.ajalt.clikt.parameters.options.option
@@ -22,9 +20,6 @@ abstract class CommandArguments : CliktCommand(name = "dreath") {
 
     // === Working Directories ===
     val gameDir by option("-G", "--game-dir", help = "Game's working directory").path().default(File(SystemInfo.prop("user.dir")).toPath())
-
-    // === Additional Stuff ===
-    val data by argument(help = "Additional data for the game").multiple(required = false)
 
     override fun run() = Game.run(this)
 }

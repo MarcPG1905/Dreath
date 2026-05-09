@@ -1,9 +1,11 @@
 {
   "general": {
-    "load-mods": true
+    "load-mods": true,
+    "log-commands": true
   },
   "logger": {
     "level": "fine",
     "ansi-formatting": true
-  }
+  },
+  "version": 1
 }

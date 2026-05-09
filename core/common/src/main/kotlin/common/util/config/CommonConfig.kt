@@ -11,8 +11,9 @@ object CommonConfig : GameConfig(Game.dir, "common") {
 
     override val version: Int = 1
 
+    val loadMods by boolean("general.load-mods", true)
+    val logCommands by boolean("general.log-commands", true)
+
     val loggerLevel by enum<LogLevel>("logger.level", LogLevel.FINE)
     val loggerAnsiFormatting by boolean("logger.ansi-formatting", true)
-
-    val loadMods by boolean("general.load-mods", true)
 }

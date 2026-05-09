@@ -5,28 +5,11 @@
       "admins-bypass-limit": true,
       "limit": 10,
       "show-count": true
-    },
-    "autosave": {
-      "enabled": true,
-      "time": {
-        "minutes": 5
-      }
     }
   },
   "network": {
     "abstract-ips": true,
-    "ports": {
-      "data": 42068,
-      "gameplay": 42069,
-      "social": 42070
-    },
-    "ip": "localhost"
-  },
-  "specific": {
-    "collisions": {
-      "players": true,
-      "solution": "physics"
-    }
+    "port": 42069
   },
   "version": 1
 }
