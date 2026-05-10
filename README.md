@@ -63,15 +63,10 @@ If you don't use Discord or would like to contact me otherwise, please rely on o
 
 ## For Developers
 
-### Used Libraries
+### Honorable Libraries
 
-Dreath uses these libraries:
+Dreath uses these libraries which aren't very popular and deserve a shoutout:
 
-- [LibPG](https://github.com/MarcPG1905/LibPG) - Various features, like downloads, time formats, json storage, etc.
-- [clikt](https://github.com/ajalt/clikt) - CLI argument parsing with a lot of options and works very well with Kotlin.
-- [kool](https://github.com/kool-engine/kool) - A Kotlin game engine with Vulkan support.
-- [KPresence](https://github.com/vyfor/KPresence) - Custom Discord rich presence which just works.
-- Kotlin Extensions:
-  - [kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization) - Kotlin extension for working with JSON and some other formats.
-  - [kotlinx.coroutines](https://github.com/Kotlin/kotlinx.coroutines) - Kotlin extension for working with different threads.
-  - [kotlinx-datetime](https://github.com/Kotlin/kotlinx-datetime) - Kotlin extension for working with time formats more easily than the default JVM variants.
+- [KPresence](https://github.com/vyfor/KPresence) - Custom Discord rich presence which just works (sometimes).
+- [KtLibPG](https://github.com/MarcPG1905/KtLibPG) - Various utilities and features, like downloads, time formats, etc.
+- [lz4-java](https://github.com/yawkat/lz4-java) - A JVM implementation of LZ4 compression.
