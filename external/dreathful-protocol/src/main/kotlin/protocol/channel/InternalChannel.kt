@@ -1,8 +1,7 @@
 package protocol.channel
 
-import com.marcpg.dreath.util.toByteArray
-import com.marcpg.dreath.util.toUInt
 import protocol.Packet
+import protocol.data.types.connect.ConnectionConfirmPD
 import protocol.header.TypeId
 import protocol.session.*
 import protocol.socket.SocketManager
@@ -11,10 +10,10 @@ import protocol.util.createPing
 import java.net.SocketAddress
 
 internal object InternalChannel : Channel("internal", reliable = true, ordered = true, encrypted = true) {
-    override fun handle(source: Session, packet: Packet) {
+    override fun handle(source: Session, packet: Packet<*>) {
         when (packet.header.type) {
             TypeId.CONNECT -> {
-                SessionManager.localSession = LocalSession(packet.data!!.toUInt())
+                SessionManager.localSession = LocalSession((packet.data as ConnectionConfirmPD).clientSessionId)
 
                 source.state = SessionState.CONNECTED
                 SocketManager.current.log.success("Connected to server ${source.address}.")
@@ -34,7 +33,7 @@ internal object InternalChannel : Channel("internal", reliable = true, ordered =
         }
     }
 
-    override fun handleSessionless(sourceAddress: SocketAddress, packet: Packet) {
+    override fun handleSessionless(sourceAddress: SocketAddress, packet: Packet<*>) {
         // type = CONNECT & variant = 0
         if (packet.header.type == TypeId.CONNECT && !packet.header.variant) {
             val clientSession = SessionManager.getOrAddNormal(sourceAddress)
@@ -45,7 +44,7 @@ internal object InternalChannel : Channel("internal", reliable = true, ordered =
                 type = TypeId.CONNECT,
                 channel = InternalChannel,
                 variant = true, // Server->Client Variant (Confirmation)
-                data = clientSession.id.toByteArray()
+                data = ConnectionConfirmPD(clientSession.id)
             ))
 
             SocketManager.current.log.info("Confirmed connection request of $sourceAddress.")

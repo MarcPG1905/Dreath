@@ -3,8 +3,8 @@ package protocol.channel.features
 import net.jpountz.lz4.LZ4Compressor
 import net.jpountz.lz4.LZ4Factory
 import net.jpountz.lz4.LZ4SafeDecompressor
-import protocol.Packet
 import protocol.header.PacketHeader
+import protocol.header.PayloadPacketHeader
 import protocol.session.SessionManager
 
 /**
@@ -41,19 +41,20 @@ class Compressor(val level: CompressionLevel) {
      * @return The decompressed data.
      */
     fun decompress(data: ByteArray, mtu: Int): ByteArray {
-        return decompressor.decompress(data, mtu - PacketHeader.dataFormat.byteLength - 8)
+        return decompressor.decompress(data, mtu - 24) // 8 (UDP header) + 16 (max. custom header)
     }
 
     /**
      * Decompresses this packet using LZ4 and the channel's MTU.
      *
      * Fails if the packet does not have any data or is not compressed.
-     * @param packet The packet to decompress.
+     * @param header Header of the packet to decompress.
+     * @param rawData The packet's raw data as a [ByteArray].
      * @return The decompressed data.
      */
-    fun decompressPacket(packet: Packet): ByteArray {
-        require(packet.header.compressed) { "Packet is not compressed" }
-        requireNotNull(packet.data) { "Packet does not have any data to decompress" }
+    fun decompressPacket(header: PacketHeader, rawData: ByteArray): ByteArray {
+        require(header is PayloadPacketHeader) { "Only packets with a payload can be decompressed" }
+        require(header.compressed) { "Packet is not compressed" }
 
         // TODO: Replace 1024 with a safe default. Likely gonna be around 512 or so.
         return decompress(packet.data, SessionManager[packet.header.sourceSessionId]?.mtu ?: 1024)

@@ -54,14 +54,14 @@ abstract class Channel(
     }
 
     /** Handles this packet from an existing session/connection. */
-    abstract fun handle(source: Session, packet: Packet)
+    abstract fun handle(source: Session, packet: Packet<*>)
 
     /**
      * Handles this packet from an address which did not establish a connection yet.
      *
      * By default, this throws an exception, but some implementation of [Channel] may make this actually do something.
      */
-    open fun handleSessionless(sourceAddress: SocketAddress, packet: Packet) {
+    open fun handleSessionless(sourceAddress: SocketAddress, packet: Packet<*>) {
         error("Unknown packet origin session")
     }
 }

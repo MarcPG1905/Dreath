@@ -68,7 +68,7 @@ sealed class Session(
     val receiveSequence = AtomicUInt(0u)
 
     /** List of all packets which have not yet been acknowledged by this session and may need retransmission. */
-    val pendingAcknowledgements = ConcurrentHashMap<Long, Packet>()
+    val pendingAcknowledgements = ConcurrentHashMap<Long, Packet<*>>()
 
     /**
      * Touches this session to update the [lastSeen] value and reset the always running countdown to a timeout.

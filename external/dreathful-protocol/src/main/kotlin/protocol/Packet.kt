@@ -1,23 +1,30 @@
 package protocol
 
+import protocol.data.PacketData
+import protocol.data.PacketDataManager
+import protocol.data.ProcessedData
 import protocol.header.PacketHeader
-import protocol.util.RawDataDecodableObj
-import protocol.util.RawDataEncodable
+import protocol.header.PayloadPacketHeader
+import protocol.header.SignalPacketHeader
+import protocol.util.DecodableObj
+import protocol.util.Encodable
+import protocol.util.encodeToByteArray
+import protocol.util.toBinary
 import java.nio.ByteBuffer
 
-data class Packet(
+data class Packet<D : PacketData<D>>(
     val header: PacketHeader,
-    val data: ByteArray?,
-) : RawDataEncodable {
-    companion object : RawDataDecodableObj<Packet>() {
-        override fun decode(buffer: ByteBuffer): Packet {
-            val header = PacketHeader.decode(buffer)
-
-            val payloadLength = header.length.toInt()
-            val payload = ByteArray(payloadLength)
-            buffer.get(payload)
-
-            return Packet(header, payload)
+    val data: D?,
+) : Encodable {
+    companion object : DecodableObj<Packet<*>> {
+        override fun decode(buffer: ByteBuffer): Packet<*> {
+            if (buffer.remaining() >= 16) {
+                val header = PayloadPacketHeader.decode(buffer)
+                val dataType = PacketDataManager.INSTANCE.getUnknown(header.dataType) ?: error("Unknown data type ${header.dataType.toBinary(4)}")
+                return Packet(header, dataType.decode(buffer))
+            } else {
+                return Packet(SignalPacketHeader.decode(buffer), null)
+            }
         }
     }
 
@@ -29,5 +36,5 @@ data class Packet(
             field = value
         }
 
-    override fun encode(): ByteArray = if (data == null) header.encode() else header.encode() + data
+    override fun encode(): ByteArray = if (data == null) header.encode() else header.encode() + data.encodeToByteArray()
 }

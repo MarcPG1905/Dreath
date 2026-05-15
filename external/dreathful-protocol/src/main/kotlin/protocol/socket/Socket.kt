@@ -70,10 +70,10 @@ sealed class Socket(val server: Boolean, val port: Int) : LoggerOwnerImpl("Socke
     }
 
     /** Sends a packet to an address. */
-    fun sendToAddress(address: SocketAddress, packet: Packet) = sendRawToAddress(address, ByteBuffer.wrap(packet.encode()))
+    fun sendToAddress(address: SocketAddress, packet: Packet<*>) = sendRawToAddress(address, ByteBuffer.wrap(packet.encode()))
 
     /** Sends a packet to a session/connection. */
-    fun send(session: Session, packet: Packet) = sendRaw(session, ByteBuffer.wrap(packet.encode()))
+    fun send(session: Session, packet: Packet<*>) = sendRaw(session, ByteBuffer.wrap(packet.encode()))
 
     fun connectToServer(address: SocketAddress) {
         require(!server) { "Only clients can connect to servers" }
