@@ -16,7 +16,7 @@ enum class TypeId(val id: UByte) {
     PING(2u),
 
     /** Data-carrying packets. */
-    DATA(3u);
+    DATA(15u);
 
     companion object {
         private val map = TypeId.entries.associateBy { it.id }
