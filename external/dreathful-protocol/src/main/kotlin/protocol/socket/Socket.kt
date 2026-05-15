@@ -77,6 +77,7 @@ sealed class Socket(val server: Boolean, val port: Int) : LoggerOwnerImpl("Socke
 
     fun connectToServer(address: SocketAddress) {
         require(!server) { "Only clients can connect to servers" }
+        require(SessionManager[0u] == null) { "Client is already connected to a server" }
 
         InternalChannel.connectToServer(address)
     }
