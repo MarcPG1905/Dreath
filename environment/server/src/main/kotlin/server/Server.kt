@@ -14,6 +14,7 @@ import common.registrars.ChannelRegistrar
 import common.util.SystemInfo
 import engine.EventRegistrar
 import engine.FeatureRegistrar
+import protocol.socket.SocketManager
 import server.command.Internal
 import server.testing.StartRender
 import java.io.File
@@ -25,6 +26,10 @@ object Server : EnvironmentClass<ServerConfig>() {
     override val environment: Environment = Environment.SERVER
     override val dir: Path = (Game.CLI_ARGS as ServerCommandArguments).serverDir.createDirectories()
     override val config: ServerConfig = ServerConfig
+
+    override fun extraInit() {
+        SocketManager.open(true, ServerConfig.networkPort)
+    }
 
     override fun extraRun(start: TimeMark) {
         logAction(start, "server-specific registry") { initRegistry() }

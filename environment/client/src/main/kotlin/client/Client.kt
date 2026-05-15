@@ -13,6 +13,7 @@ import common.Game
 import common.command.CommandRegistrar
 import common.registrars.ChannelRegistrar
 import common.util.SystemInfo
+import protocol.socket.SocketManager
 import java.io.File
 import java.nio.file.Path
 import kotlin.io.path.createDirectories
@@ -22,6 +23,10 @@ object Client : EnvironmentClass<ClientConfig>() {
     override val environment: Environment = Environment.CLIENT
     override val dir: Path = (Game.CLI_ARGS as ClientCommandArguments).clientDir.createDirectories()
     override val config: ClientConfig = ClientConfig
+
+    override fun extraInit() {
+        SocketManager.open(false, 0)
+    }
 
     override fun extraRun(start: TimeMark) {
         logAction(start, "client-specific registry") { initRegistry() }

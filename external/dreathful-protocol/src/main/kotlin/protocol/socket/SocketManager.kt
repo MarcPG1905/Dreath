@@ -18,10 +18,14 @@ object SocketManager {
      * Selects the best socket implementation on this system and calls its [Socket.open] method.
      *
      * Cannot be called twice.
+     *
+     * @param server If this socket manager should be opened in the context of a server, meaning
+     * @param port The port to run the main socket on.
+     *             If set to 0, this will be randomly assigned by the OS, which is recommended for clients.
      */
-    fun open(server: Boolean) {
+    fun open(server: Boolean, port: Int = 0) {
         require(!::current.isInitialized) { "SocketManager has already been opened" }
-        current = selectSocket(server)
+        current = selectSocket(server, port)
 
         current.open()
     }
@@ -37,5 +41,5 @@ object SocketManager {
         current.close()
     }
 
-    private fun selectSocket(server: Boolean): Socket = JavaNioSocket(server, 42069) // TODO: Replace with configured value instead of always 42069.
+    private fun selectSocket(server: Boolean, port: Int): Socket = JavaNioSocket(server, port)
 }

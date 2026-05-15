@@ -25,6 +25,7 @@ abstract class EnvironmentClass<T : GameConfig> : LoggerOwnerImpl() {
         extraEnd()
     }
 
+    open fun extraInit() {}
     open fun extraRun(start: TimeMark) {}
     open fun extraEnd() { config.save() }
 

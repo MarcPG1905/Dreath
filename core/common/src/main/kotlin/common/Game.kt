@@ -75,7 +75,8 @@ object Game : LoggerOwner {
 
         log.info("Starting Dreath main logic...")
 
-        SocketManager.open(ENVIRONMENT == Environment.SERVER)
+        ENVIRONMENT.instance()?.extraInit()
+
         ChannelManager.initialize(ChannelRegistrar)
 
         val loadMods = !CLI_ARGS.noMods && CommonConfig.loadMods
