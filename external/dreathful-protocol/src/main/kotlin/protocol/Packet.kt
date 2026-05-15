@@ -21,23 +21,13 @@ data class Packet(
         }
     }
 
+    var processedData: ProcessedData? = null
+        set(value) {
+            require(field == null) { "Cannot assign processedData twice"}
+            require(data != null) { "Cannot set processed data of a packet without data"}
+
+            field = value
+        }
+
     override fun encode(): ByteArray = if (data == null) header.encode() else header.encode() + data
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-
-        other as Packet
-
-        if (header != other.header) return false
-        if (!data.contentEquals(other.data)) return false
-
-        return true
-    }
-
-    override fun hashCode(): Int {
-        var result = header.hashCode()
-        result = 31 * result + (data?.contentHashCode() ?: 0)
-        return result
-    }
 }

@@ -4,6 +4,7 @@ import protocol.Packet
 import protocol.channel.features.CompressionLevel
 import protocol.channel.features.Compressor
 import protocol.channel.features.Encrypter
+import protocol.data.ProcessedData
 import protocol.session.Session
 import java.net.SocketAddress
 
@@ -40,7 +41,7 @@ abstract class Channel(
      * Processes some data using this channel's encryption and compression.
      * @returns A triple of (output data, compressed, encrypted).
      */
-    fun processData(data: ByteArray, doNotCompress: Boolean = false, doNotEncrypt: Boolean = false): Triple<ByteArray, Boolean, Boolean> {
+    fun processData(data: ByteArray, doNotCompress: Boolean = false, doNotEncrypt: Boolean = false): ProcessedData {
         var data = data
 
         val compress = !doNotCompress && compressor != null
@@ -49,7 +50,7 @@ abstract class Channel(
         val encrypt = !doNotEncrypt && encrypted && encrypter != null
         // TODO: if (encrypt) data = encrypter.encrypt(data, <nonce>, <aad>)
 
-        return Triple(data, compress, encrypt)
+        return ProcessedData(data, compress, encrypt)
     }
 
     /** Handles this packet from an existing session/connection. */
