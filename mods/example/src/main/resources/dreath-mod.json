@@ -23,7 +23,7 @@
         "id": "example_library",
         "min-version": "1.2.3",
         "required": true,
-        "load": "after"
+        "load": "AFTER"
       }
     ]
   }

@@ -20,7 +20,8 @@ include(
 
     "external:cotton",
     "external:dreathful-protocol",
-    "external:mod-example",
+
+    "mods:example",
 )
 
 includeBuild(

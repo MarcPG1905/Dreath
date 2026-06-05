@@ -10,6 +10,7 @@ import com.marcpg.dreath.log.dreathLogger
 import com.marcpg.dreath.log.printStackTrace
 import com.marcpg.dreath.log.printStackTraceFine
 import com.marcpg.dreath.util.SimpleVersion
+import com.marcpg.libpg.util.enumValueNoCase
 import common.Game
 import common.util.InternalConstants
 import common.util.config.StaticJsonConfigProvider
@@ -165,7 +166,7 @@ object ModLoader {
                             (it["id"] as? String) ?: "",
                             SimpleVersion.fromString((it["min-version"] as? String) ?: "0.0.0"),
                             (it["required"] as? Boolean) ?: false,
-                            enumValueOf<ModInfo.Dependencies.Dependency.LoadOrder>((it["load"] as? String) ?: "AUTO")
+                            enumValueNoCase<ModInfo.Dependencies.Dependency.LoadOrder>((it["load"] as? String) ?: "AUTO")
                         ) } ?: listOf()
                     )
                 )
