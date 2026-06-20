@@ -1,10 +1,10 @@
 package com.marcpg.dreath.command
 
+import com.marcpg.cotton.lang.ILang
 import com.marcpg.dreath.util.vector.Location
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.buildJsonObject
-import java.util.*
 
 /**
  * Represents any type of command parameter and should not be used raw.
@@ -163,7 +163,7 @@ class CommandContext(val executor: CommandExecutor) {
 }
 
 /**
- * Something that executed a command with information like the location, name, and locale,
+ * Something that executed a command with information like the location, name, and language,
  * but also some utility methods for sending command feedback messages.
  *
  * Usually an entity, user, or the console.
@@ -178,8 +178,8 @@ interface CommandExecutor {
     /** Gets the name of this executor. */
     fun name(): String
 
-    /** Gets the locale/language of this executor. */
-    fun locale(): Locale
+    /** Gets the language of this executor. */
+    fun lang(): ILang
 
     /** Shows a fine-level message to the executor. */
     fun fine(raw: String)

@@ -6,6 +6,7 @@ import kotlinx.serialization.json.*
 
 abstract class SimpleStringBasedBoll(content: String, style: Style = Style(), followingBolls: MutableList<Boll> = mutableListOf()) : BollImpl<String>(content, style, followingBolls) {
     abstract fun content(receiver: Receiver): String
+    abstract fun implementationId(): String
     abstract fun JsonObjectBuilder.serializationFields()
 
     override fun renderString(receiver: Receiver): String {
@@ -14,7 +15,7 @@ abstract class SimpleStringBasedBoll(content: String, style: Style = Style(), fo
 
     override fun serializeJson(): JsonElement {
         return buildJsonObject {
-            put("impl", JsonPrimitive("translatable"))
+            put("impl", JsonPrimitive(implementationId()))
 
             this@buildJsonObject.serializationFields()
 
@@ -28,7 +29,7 @@ abstract class SimpleStringBasedBoll(content: String, style: Style = Style(), fo
 
     override fun renderJson(receiver: Receiver): JsonElement {
         return buildJsonObject {
-            put("impl", JsonPrimitive("translatable"))
+            put("impl", JsonPrimitive(implementationId()))
             put("content", JsonPrimitive(content(receiver)))
             val style = style.renderJson(receiver)
             if (style.jsonObject.isNotEmpty())

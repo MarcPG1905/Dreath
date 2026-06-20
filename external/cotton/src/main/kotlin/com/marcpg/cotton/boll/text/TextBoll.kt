@@ -24,6 +24,8 @@ class TextBoll(content: String = "", style: Style = Style(), followingBolls: Mut
 
     override fun content(receiver: Receiver): String = content
 
+    override fun implementationId(): String = "text"
+
     override fun JsonObjectBuilder.serializationFields() {
         put("content", JsonPrimitive(content))
     }

@@ -3,6 +3,7 @@ package com.marcpg.cotton.boll
 import com.marcpg.cotton.FullyDeserializable
 import com.marcpg.cotton.FullySerializable
 import com.marcpg.cotton.boll.text.TextBoll
+import com.marcpg.cotton.boll.text.TranslatableBoll
 import com.marcpg.cotton.style.Outline
 import com.marcpg.cotton.style.Style
 import com.marcpg.cotton.style.StyleDecoration
@@ -22,8 +23,9 @@ interface Boll : FullySerializable<Boll> {
         override fun deserializeJson(data: JsonElement): Boll {
             require(data is JsonObject) { "Json must be object" }
 
-            when (data["impl"]?.jsonPrimitive?.content) {
-                "text" -> return TextBoll.deserializeJson(data)
+            return when (data["impl"]?.jsonPrimitive?.content) {
+                "text" -> TextBoll.deserializeJson(data)
+                "translatable" -> TranslatableBoll.deserializeJson(data)
                 else -> throw IllegalArgumentException("Unknown impl: ${data["impl"]?.jsonPrimitive?.content}")
             }
         }

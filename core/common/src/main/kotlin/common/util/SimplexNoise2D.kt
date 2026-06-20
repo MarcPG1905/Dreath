@@ -51,7 +51,7 @@ class SimplexNoise2D(seed: Seed = Seed.ZERO) {
         // Determine which simplex we’re in
         val (i1, j1) = if (x0 > y0) 1 to 0 else 0 to 1
 
-        // Offsets for the middle corner in (x,y) unskewed coords
+        // Offsets for the middle corner in (x,y) unskewed cords
         val x1 = x0 - i1 + G2
         val y1 = y0 - j1 + G2
 

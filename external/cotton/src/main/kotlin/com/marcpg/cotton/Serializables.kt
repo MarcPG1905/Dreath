@@ -59,14 +59,14 @@ interface JsonDeserializable<T> {
 }
 
 /**
- * Something that can be rendered in the markdown format.
+ * Something that can be rendered in the Markdown format.
  *
  * @author MarcPG
  * @since 0.1.0
  */
 interface MarkdownSerializable<T> {
     /**
-     * Render this in markdown using the receiver's settings.
+     * Render this in Markdown using the receiver's settings.
      *
      * Already rendered, meaning that translations are already translated for example.
      */
@@ -76,19 +76,19 @@ interface MarkdownSerializable<T> {
 /**
  * Something deserializable (un-renderable) in the JSON format.
  *
- * Keep in mind, due to markdown's nature, translations or similar can not be reconstructed.
+ * Keep in mind, due to Markdown's nature, translations or similar can not be reconstructed.
  *
  * @author MarcPG
  * @since 0.1.0
  */
 interface MarkdownDeserializable<T> {
-    /** Deserializes the markdown input to the type T. */
+    /** Deserializes the Markdown input to the type T. */
     fun deserializeMarkdown(data: String): T
 }
 
 
 /**
- * Something serializable in all the formats (currently string, JSON, ANSI, and markdown).
+ * Something serializable in all the formats (currently string, JSON, ANSI, and Markdown).
  *
  * ### Serialize
  * Includes the data required for rendering to another player.
@@ -107,7 +107,7 @@ interface MarkdownDeserializable<T> {
 interface FullySerializable<T> : StringSerializable<T>, JsonSerializable<T>, AnsiSerializable<T>, MarkdownSerializable<T>
 
 /**
- * Something deserializable from the JSON and markdown formats.
+ * Something deserializable from the JSON and Markdown formats.
  *
  * @author MarcPG
  * @since 0.1.0

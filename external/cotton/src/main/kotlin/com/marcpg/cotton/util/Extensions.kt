@@ -6,6 +6,7 @@ import com.marcpg.cotton.boll.text.TranslatableBoll
 import com.marcpg.cotton.style.Outline
 import com.marcpg.cotton.style.Style
 import com.marcpg.cotton.style.StyleDecoration
+import com.marcpg.cotton.translations.TextReplacement
 
 /**
  * Creates a new text-based boll based on the raw text input and a style.
@@ -21,13 +22,13 @@ fun boll(text: String, color: Color? = null, decorations: Map<StyleDecoration, B
 /**
  * Creates a new translatable boll based on the translation key, a style, and optionally some placeholders.
  */
-fun translatable(key: String, style: Style, placeholders: List<String> = listOf()) = TranslatableBoll(key, placeholders, style)
+fun translatable(key: String, style: Style, replacements: Map<String, TextReplacement> = mapOf()) = TranslatableBoll(key, replacements, style)
 
 /**
  * Creates a new translatable boll based on the translation key and optionally some style options or placeholders.
  */
-fun translatable(key: String, color: Color? = null, decorations: Map<StyleDecoration, Boolean?> = mapOf(), font: Any? = null, backgroundColor: Color? = null, outline: Outline? = null, placeholders: List<String> = listOf()) =
-    translatable(key, Style(color, decorations.toMutableMap(), font, backgroundColor, outline), placeholders)
+fun translatable(key: String, color: Color? = null, decorations: Map<StyleDecoration, Boolean?> = mapOf(), font: Any? = null, backgroundColor: Color? = null, outline: Outline? = null, replacements: Map<String, TextReplacement> = mapOf()) =
+    translatable(key, Style(color, decorations.toMutableMap(), font, backgroundColor, outline), replacements)
 
 /** Appends a single whitespace to this boll. */
 fun Boll.appendSpace(): Boll = append(boll(" "))

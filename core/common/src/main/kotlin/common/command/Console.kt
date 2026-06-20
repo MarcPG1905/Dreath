@@ -1,5 +1,7 @@
 package common.command
 
+import com.marcpg.cotton.lang.ILang
+import com.marcpg.cotton.lang.Lang
 import com.marcpg.dreath.command.CommandExecutor
 import com.marcpg.dreath.log.DreathLoggerFactory
 import com.marcpg.dreath.util.vector.Location
@@ -14,7 +16,6 @@ import org.jline.reader.impl.history.DefaultHistory
 import org.jline.terminal.Terminal
 import org.jline.terminal.TerminalBuilder
 import org.jline.utils.InfoCmp
-import java.util.*
 import kotlin.concurrent.thread
 import kotlin.system.exitProcess
 
@@ -89,7 +90,7 @@ class Console {
     object ConsoleCommandExecutor : CommandExecutor {
         override fun location(): Location = Location.DUMMY
         override fun name(): String = "Console"
-        override fun locale(): Locale = Locale.getDefault()
+        override fun lang(): ILang = Lang.DEFAULT
 
         override fun fine(raw: String) = raw.split("\n").forEach { Game.log.fine(it) }
         override fun config(raw: String) = raw.split("\n").forEach { Game.log.config(it) }

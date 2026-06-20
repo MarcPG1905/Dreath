@@ -1,8 +1,8 @@
 package com.marcpg.cotton.receiver
 
 import com.marcpg.cotton.boll.Boll
+import com.marcpg.cotton.lang.ILang
 import com.marcpg.libpg.data.time.Time
-import java.util.*
 
 /**
  * Something that can receive various types of [Boll]s:
@@ -28,8 +28,8 @@ interface Receiver {
         const val DEFAULT_TEXT_POS_Y = 50.0
     }
 
-    /** This receiver's locale for translations. */
-    val locale: Locale
+    /** This receiver's language for translations. */
+    val lang: ILang
 
     /** This receiver's name for reference. */
     val name: String

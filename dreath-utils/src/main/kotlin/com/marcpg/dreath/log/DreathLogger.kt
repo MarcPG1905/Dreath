@@ -1,6 +1,8 @@
 package com.marcpg.dreath.log
 
 import com.marcpg.cotton.boll.Boll
+import com.marcpg.cotton.lang.ILang
+import com.marcpg.cotton.lang.Lang
 import com.marcpg.cotton.receiver.Receiver
 import com.marcpg.libpg.color.Ansi
 import com.marcpg.libpg.data.time.Time
@@ -8,7 +10,6 @@ import com.marcpg.libpg.log.Logger
 import java.io.PrintStream
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import java.util.*
 
 /**
  * Represents a logger used in the Dreath game, with some basic logging and also some utility stuff.
@@ -44,7 +45,7 @@ class DreathLogger internal constructor(
         var ansiFormatting = true
     }
 
-    override val locale: Locale = Locale.getDefault()
+    override val lang: ILang = Lang.DEFAULT
 
     /**
      * Logs a message at [fine level][LogLevel.FINE].
