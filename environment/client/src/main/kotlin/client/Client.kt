@@ -43,7 +43,6 @@ object Client : EnvironmentClass<ClientConfig>() {
         Registration.register(RegistrarType.COMMANDS, listOf(
             Internal(),
         ))
-
     }
 }
 

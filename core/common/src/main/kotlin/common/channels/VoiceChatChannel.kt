@@ -6,6 +6,6 @@ import protocol.session.Session
 
 /** Voice chat transmission — unreliable and unordered. */
 object VoiceChatChannel : Channel("vc", encrypted = true) {
-    override fun handle(source: Session, packet: Packet) {
+    override fun handle(source: Session, packet: Packet<*>) {
     }
 }

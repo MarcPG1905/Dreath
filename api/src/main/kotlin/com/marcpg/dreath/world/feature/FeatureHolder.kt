@@ -20,5 +20,5 @@ abstract class FeatureHolder {
     fun removeFeature(feature: String): Boolean = features.removeAll { it.name == feature }
 
     /** Lists all features by their names ([Feature.name]). */
-    fun listFeatures(feature: Feature): List<String> = features.map { it.name }
+    fun listFeatures(): List<String> = features.map { it.name }
 }

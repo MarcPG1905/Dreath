@@ -7,7 +7,7 @@ plugins {
 version = "1.0.0"
 
 kotlin {
-    jvmToolchain(24)
+    jvmToolchain(25)
 }
 
 repositories {

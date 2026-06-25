@@ -7,7 +7,7 @@ import com.marcpg.dreath.util.Seed
  * Represents some kind of feature that can be applied to worlds/chunks via a [FeatureHolder].
  * This can be anything from mountains, to water, to corrosion, or separate entities.
  *
- * @property name This feature's name for debugging purposes.
+ * @property name This feature's **unique** name/ID used internally.
  *
  * @author MarcPG
  * @since 0.1.0
@@ -30,7 +30,7 @@ interface Feature {
      * Should be unique per feature **in this mod** to avoid naming collisions.
      */
     val glslFuncName: String
-        get() = name.replace("\\s+".toRegex(), "_")
+        get() = "f_sdf_" + name.replace("\\s+".toRegex(), "_").lowercase()
 
     /** Returns the GLSL implementation of this feature for runtime shader compilation. */
     fun getShaderSDF(): String

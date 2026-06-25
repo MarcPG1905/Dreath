@@ -36,7 +36,7 @@ class GrowableByteBuffer internal constructor(val pool: GrowableByteBufferPool, 
 
     fun putBytes(array: ByteArray): GrowableByteBuffer {
         ensureRemaining(1)
-        buffer.put(buffer)
+        buffer.put(array)
         return this
     }
 
