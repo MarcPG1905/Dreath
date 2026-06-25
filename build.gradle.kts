@@ -50,14 +50,7 @@ allprojects {
     apply(plugin = "org.jetbrains.kotlin.plugin.serialization")
 
     kotlin {
-        jvmToolchain(24)
-
-        compilerOptions {
-            freeCompilerArgs.add("-opt-in=kotlin.ExperimentalStdlibApi")
-            freeCompilerArgs.add("-opt-in=kotlin.ExperimentalUnsignedTypes")
-            freeCompilerArgs.add("-opt-in=kotlin.time.ExperimentalTime")
-            freeCompilerArgs.add("-opt-in=kotlin.uuid.ExperimentalUuidApi")
-        }
+        jvmToolchain(25)
     }
 
     repositories {

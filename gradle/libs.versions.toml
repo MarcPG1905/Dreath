@@ -1,10 +1,10 @@
 [versions]
 clikt = "5.1.0"
 dokka = "2.2.0"
-jline = "4.1.0"
-joml = "1.10.8"
+jline = "4.2.1"
+joml = "1.10.9"
 joml-primitives = "1.10.0"
-kotlin = "2.3.0"
+kotlin = "2.4.0"
 kotlin-coroutines = "1.11.0"
 kotlin-datetime = "0.8.0"
 kotlin-serialization-json = "1.11.0"
@@ -12,7 +12,7 @@ kpresence = "0.6.6"
 ktlibpg = "2.1.1"
 lwjgl = "3.4.1"
 lz4 = "1.11.0"
-shadow = "9.4.1"
+shadow = "9.4.2"
 versionCatalogueUpdate = "1.1.0"
 
 [plugins]
