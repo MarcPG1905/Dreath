@@ -1,0 +1,16 @@
+{
+  "id": "base",
+  "name": "Base",
+  "version": "0.1.0",
+  "description": "The base game content.",
+  "main": "com.marcpg.mods.base",
+  "developers": [ "MarcPG" ],
+  "contact": {
+    "website": "https://marcpg.com/dreath",
+    "discord": "discord.gg/vzvccFtVyT",
+    "source": "https://github.com/MarcPG1905/Dreath/tree/main/mods/base"
+  },
+  "dependencies": {
+    "dreath": "0.1.0"
+  }
+}

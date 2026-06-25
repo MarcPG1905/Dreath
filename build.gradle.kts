@@ -19,6 +19,7 @@ versionCatalogUpdate {
 }
 
 fun copiedTasks() = mapOf(
+    ":mods:base" to "jar",
     ":mods:example" to "jar",
     ":environment:client" to "shadowJar",
     ":environment:server" to "shadowJar",

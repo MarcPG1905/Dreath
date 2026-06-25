@@ -21,6 +21,7 @@ include(
     "external:cotton",
     "external:dreathful-protocol",
 
+    "mods:base",
     "mods:example",
 )
 
